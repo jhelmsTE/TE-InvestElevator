@@ -74,16 +74,20 @@ export default {
   }
 };
 </script>
+
 <style>
-#login{
+.text-center{
   display: flex;
   text-align: center;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: rgb(20, 140, 238);
+  background: rgb(0,175,239,255);
+  
 }
 .sr-only{
+display: flex;
+margin-top: 4px;
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 font-weight: bold;
 text-shadow: 2px 2px 4px honeydew;
@@ -94,12 +98,23 @@ h1{
   text-shadow: 2px 3px 4px honeydew;
 }
 .need-account{
+  justify-content: center;
+  display: flex;
   color: white;
   margin: 2px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
+
 button{
+  
   color:rgb(20, 140, 238);
   margin: 5px;
+}
+.alert.alert-success{
+font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+font-weight: bold;
+margin-bottom: 10px;
+text-shadow: 2px 3px 4px honeydew;
 }
 
 </style>
