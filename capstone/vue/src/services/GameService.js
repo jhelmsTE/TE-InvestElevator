@@ -3,7 +3,7 @@ import axios from 'axios';
 export default {
 
     getAllGames() {
-        return axios.get('/games')
+        return axios.get('/viewAllGames')
     },
 
     getGameDetails(gameID) {

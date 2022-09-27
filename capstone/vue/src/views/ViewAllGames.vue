@@ -3,30 +3,30 @@
     <h1>Welcome to the Game Board!</h1>
     <h3>Here are the available games</h3>
     <div class = "all-cards">
-    <router-link :to="{name: 'game-details', params: {id: game.id}}" class="card" v-for="game in games" v-bind:key="game.id">
-      <h4>Test Game Name {{ game.name }}</h4>
+    <router-link :to="{name: 'viewAllGames'}" class="card" v-for="game in games" v-bind:key="game.id">
+      <h4>{{ game.gameName }}</h4>
     </router-link>
     </div>
   </div>
 </template>
 
 <script>
-// import gameService from '../services/GameService';
+ import gameService from '../services/GameService';
 
 export default {
   data() {
     return {
-      games: ["game", "game", "game", "game", "game", "game", "game", "game", "game", "game"],
+      games: [],
       game: {
         name: "",
       },
     };
   },
-  // created() {
-  //   gameService.getAllGames(this.$route.params.id).then(response => {
-  //     this.name = response.data.name;
-  //   })
-  // }
+   created() {
+     gameService.getAllGames().then(response => {
+       this.games = response.data;
+     })
+   }
 };
 </script>
 
