@@ -4,24 +4,29 @@
     <h3>Here are the available games</h3>
     <div class = "all-cards">
     <router-link :to="{name: 'game-details', params: {id: game.id}}" class="card" v-for="game in games" v-bind:key="game.id">
-      <h4>Test Game Title {{ game.title }}</h4>
+      <h4>Test Game Name {{ game.name }}</h4>
     </router-link>
     </div>
   </div>
 </template>
 
 <script>
-//Need to import service to get all games
+// import gameService from '../services/GameService';
+
 export default {
   data() {
     return {
       games: ["game", "game", "game", "game", "game", "game", "game", "game", "game", "game"],
       game: {
-        title: "",
+        name: "",
       },
     };
   },
-  //Need to insert a created() method to get all games
+  // created() {
+  //   gameService.getAllGames(this.$route.params.id).then(response => {
+  //     this.name = response.data.name;
+  //   })
+  // }
 };
 </script>
 
