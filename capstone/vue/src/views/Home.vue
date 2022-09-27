@@ -10,7 +10,10 @@
   <router-link :to="{name: 'game-view'}" >
     Create Game
   </router-link>
+
+
   </div>
+
 </template>
 
 <script>
