@@ -1,6 +1,10 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS users
+CASCADE;
+DROP TABLE IF EXISTS games
+CASCADE;
+DROP TABLE IF EXISTS game_results;
 
 CREATE TABLE users (
 	user_id SERIAL,
@@ -12,13 +16,13 @@ CREATE TABLE users (
 -- Create Table Games
 CREATE TABLE games (
 	game_id SERIAL,
-	organizer_id int NOT NULL,
+	organizer_id varchar(50) NOT NULL,
 	start_date date NOT NULL,
 	end_date date NOT NULL,
 	game_name varchar NOT NULL,
 	game_results varchar,
-	CONSTRAINT PK_games PRIMARY KEY (game_id),
-	CONSTRAINT FK_games FOREIGN KEY (organizer_id) REFERENCES users(user_id)
+	CONSTRAINT PK_games PRIMARY KEY (game_id)
+
 );
 -- Create Table game_results
 CREATE TABLE game_results (
@@ -30,6 +34,7 @@ CREATE TABLE game_results (
 	CONSTRAINT FK_game_results_from_games FOREIGN KEY(game_id) REFERENCES games(game_id)
 );
 
-
+ALTER TABLE games 
+		ADD CONSTRAINT FK_games FOREIGN KEY (organizer_id) REFERENCES users(username);
 
 COMMIT TRANSACTION;
