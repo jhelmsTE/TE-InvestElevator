@@ -7,11 +7,9 @@
     <div class= "user" v-for="user in $store.state" v-bind:key="user.id">
       <p> {{user.username}}</p>
     </div>
-    <div class = "status">
-    <div class = "current-games">
-      show games in, allow user to click into games they're in via routerlink
-    </div>
-    </div>
+  <router-link :to="{name: 'game-view'}" >
+    Create Game
+  </router-link>
   </div>
 </template>
 
