@@ -5,10 +5,14 @@
       Welcome!
     </div>
     <div class= "user" v-for="user in $store.state" v-bind:key="user.id">
-      <p> {{user.username}}</p>
+      <p>{{user.username}}</p>
     </div>
-  <router-link :to="{name: 'game-view'}" >
+  <router-link :to="{name: 'game-view'}" class="create-game" >
     Create Game
+  </router-link>
+  <br>
+  <router-link :to="{name: 'viewAllGames'}" class="current-games">
+    View all Current Games
   </router-link>
 
 
@@ -44,7 +48,29 @@ body, html{
   width: 100%;
   min-height: 100%;
 }
+#welcome{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+}
+.current-games{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+}
 
+.create-game{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.user{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: bold;
+  margin-left: 10px;
+  font-size: large;
+}
 
 
 
