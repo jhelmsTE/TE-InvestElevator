@@ -7,6 +7,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 @Component
 public class JdbcGameDao implements GameDao{
@@ -33,6 +34,14 @@ public class JdbcGameDao implements GameDao{
         }else {
             throw new GameNotFoundException();
         }
+    }
+
+    @Override
+    public boolean createGame(String username, Date startDate, Date endDate, String gameName, String gameResult) {
+
+        String sql = "insert into games (organizer_id, start_date, end_date, game_name, game_results) values (?,?,?,?,?)";
+
+        return jdbcTemplate.update(sql, username, startDate, endDate, gameName, gameResult) == 1;
     }
 
     private Game mapRowToGame(SqlRowSet rs){

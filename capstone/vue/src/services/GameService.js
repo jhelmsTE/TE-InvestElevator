@@ -11,6 +11,10 @@ export default {
             const games = response.data.games;
             return games.find(game => game.id == gameID);
         })
-    }
+    },
+    create(game) {
+            console.log(game)
+            return axios.post('/createGame', game)
+        }
 
 }

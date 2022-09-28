@@ -7,9 +7,11 @@
     <div class= "user" v-for="user in $store.state" v-bind:key="user.id">
       <p>{{user.username}}</p>
     </div>
-  <router-link :to="{name: 'game-view'}" class="create-game" >
+    <div v-on:click="createGame(game)">
+  <router-link :to="{name: 'game-view'}" class="create-game"  >
     Create Game
   </router-link>
+  </div>
   <br>
   <router-link :to="{name: 'viewAllGames'}" class="current-games">
     View all Current Games
@@ -21,13 +23,29 @@
 </template>
 
 <script>
+import GameService from "../services/GameService"
+
+
 export default {
   name: "home",
   data() {
     return {
       user: {
         username:"",
+      },
+      game: {
+      username: "",
+      startDate: "2022-10-27",
+      endDate: "2022-10-27",
+      gameName: "",
+      gameResult: ""
       }
+    }
+  }, 
+  methods:{
+    createGame(){
+      this.game.username = this.$store.state.user.username
+      GameService.create(this.game);
     }
   }
 

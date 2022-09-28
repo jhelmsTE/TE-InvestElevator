@@ -8,6 +8,8 @@ import store from '../store/index'
 import CreateGameView from '../views/CreateGameView.vue'
 import ViewAllGames from '../views/ViewAllGames.vue'
 import GameDetails from '../views/GameDetails.vue'
+import BuyStocks from '../views/BuyStocks.vue'
+import SellStocks from '../views/SellStocks.vue'
 
 Vue.use(Router)
 
@@ -79,7 +81,24 @@ const router = new Router({
       meta: {
         requiresAuth: true
       }
+    },
+    {
+      path: '/viewGame/:id/buyStocks',
+      name: 'buyStocks',
+      component: BuyStocks,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path: '/viewGame/:id/sellStocks',
+      name: 'sellStocks',
+      component: SellStocks,
+      meta: {
+        requiresAuth: true
+      }
     }
+    
   ]
 })
 

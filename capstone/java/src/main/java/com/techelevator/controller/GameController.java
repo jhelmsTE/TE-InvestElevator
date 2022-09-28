@@ -4,11 +4,9 @@ import com.techelevator.dao.GameDao;
 import com.techelevator.dao.UserDao;
 import com.techelevator.model.Game;
 import com.techelevator.model.GameNotFoundException;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 import java.util.List;
 
@@ -27,4 +25,11 @@ public class GameController {
     public List<Game> viewAllGames() throws GameNotFoundException{
         return gameDao.findAllGames();
     }
-}
+
+    @RequestMapping(value = "/createGame", method = RequestMethod.POST)
+    public void create(@Valid @RequestBody Game newGame){
+        System.out.println(newGame);
+    gameDao.createGame(newGame.getUsername(), newGame.getStartDate(),
+            newGame.getEndDate(), newGame.getGameName(), newGame.getGameResult());
+    }
+    }
