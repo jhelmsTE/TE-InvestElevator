@@ -65,6 +65,18 @@ public class Game {
         return gameResult;
     }
 
+    @Override
+    public String toString() {
+        return "Game{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", gameName='" + gameName + '\'' +
+                ", gameResult='" + gameResult + '\'' +
+                '}';
+    }
+
     public void setGameResult(String gameResult) {
         this.gameResult = gameResult;
     }
