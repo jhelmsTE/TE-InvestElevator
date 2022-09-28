@@ -3,7 +3,7 @@
     <h1>Welcome to the Game Board!</h1>
     <h3>Here are the available games</h3>
     <div class = "all-cards">
-    <router-link :to="{name: 'viewAllGames'}" class="card" v-for="game in games" v-bind:key="game.id">
+    <router-link :to="{name: 'game-details', params: {id: game.id}}" class="card" v-for="game in games" v-bind:key="game.id">
       <h4>{{ game.gameName }}</h4>
     </router-link>
     </div>
@@ -41,7 +41,6 @@ h3 {
   justify-content: center;
 }
 a:link {
-  text-decoration: none;
   justify-content: center;
   align-items: center;
 }
