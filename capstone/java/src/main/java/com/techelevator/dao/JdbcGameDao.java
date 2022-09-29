@@ -45,6 +45,13 @@ public class JdbcGameDao implements GameDao{
         return jdbcTemplate.update(sql, username, startDate, endDate, gameName, gameResult) == 1;
     }
 
+    @Override
+    public void updateGame(int id, Date startDate, Date endDate, String gameName) {
+        String sql = "UPDATE games SET start_date = ?, end_date = ?, game_name = ? WHERE game_id = ? ";
+
+        jdbcTemplate.update(sql, startDate, endDate, gameName, id);
+    }
+
     private Game mapRowToGame(SqlRowSet rs){
         Game game = new Game();
         game.setId(rs.getInt("game_id"));

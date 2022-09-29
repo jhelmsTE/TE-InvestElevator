@@ -13,6 +13,14 @@ export default {
     create(game) {
             console.log(game)
             return axios.post('/createGame', game)
-        }
+    },
+    
+    createGameResult(gameResult) {
+        return axios.post('/createGameResult', gameResult)
+    },
+
+    updateGame(id) {
+        return axios.put(`/viewGame/${id}`)
+    }
 
 }
