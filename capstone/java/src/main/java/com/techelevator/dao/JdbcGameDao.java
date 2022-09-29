@@ -39,7 +39,8 @@ public class JdbcGameDao implements GameDao{
     @Override
     public boolean createGame(String username, Date startDate, Date endDate, String gameName, String gameResult) {
 
-        String sql = "insert into games (organizer_id, start_date, end_date, game_name, game_results) values (?,?,?,?,?)";
+        String sql = "insert into games (organizer_id, start_date, " +
+                "end_date, game_name, game_results) values (?,?,?,?,?)";
 
         return jdbcTemplate.update(sql, username, startDate, endDate, gameName, gameResult) == 1;
     }

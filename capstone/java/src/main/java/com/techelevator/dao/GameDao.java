@@ -13,5 +13,6 @@ public interface GameDao {
 
     //create method
 
-    boolean createGame(String username, Date startDate, Date endDate, String gameName, String gameResult);
+    boolean createGame(String username, Date startDate, Date endDate,
+                       String gameName, String gameResult);
 }
