@@ -60,7 +60,8 @@ export default {
   justify-content: center;
 }
 body, html{
-  background: rgb(0,175,239,255);
+  background: rgb(26, 17, 89);
+  color: white;
   margin: 0px;
   padding: 0px;
   width: 100%;
@@ -90,6 +91,8 @@ body, html{
   font-size: large;
 }
 
-
+a{
+ color: white; 
+}
 
 </style>
