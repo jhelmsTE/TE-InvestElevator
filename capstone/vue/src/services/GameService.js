@@ -6,12 +6,10 @@ export default {
         return axios.get('/viewAllGames')
     },
 
-    getGameDetails(gameID) {
-        return axios.get(`/games/${gameID}`).then((response) => {
-            const games = response.data.games;
-            return games.find(game => game.id == gameID);
-        })
+    getGameDetails(id) {
+        return axios.get(`/viewGame/${id}`)
     },
+
     create(game) {
             console.log(game)
             return axios.post('/createGame', game)

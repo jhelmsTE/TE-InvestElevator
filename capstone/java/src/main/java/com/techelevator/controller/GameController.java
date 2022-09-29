@@ -43,4 +43,10 @@ public class GameController {
     }
 
 
+
+    @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.GET)
+    public Game get(@PathVariable int id) throws GameNotFoundException {
+        return gameDao.findGameById(id);
+    }
+
     }
