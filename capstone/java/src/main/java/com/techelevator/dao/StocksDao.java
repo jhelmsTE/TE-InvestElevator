@@ -8,6 +8,8 @@ public interface StocksDao {
 
     List<Stocks> showUserStocksByGame(String username, int gameId);
 
+    Stocks getCompanyNameByTicker(String ticker);
+
     Stocks buyStockByTicker(String username, int gameId, String ticker);
 
     Stocks sellStockByTicker(String username, int gameId, String ticker);
