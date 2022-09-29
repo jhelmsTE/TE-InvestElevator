@@ -2,9 +2,11 @@
   <div>
     <router-link class="backToGames" :to="{name: 'viewAllGames'}">Back to View All Games</router-link>
     <h1>Game Name: {{ game.gameName }}</h1>
+    <div class="gameIntro">
     <h2 class="organizer">Organizer: {{ game.username }}</h2>
     <h4>Game Start: {{game.startDate}}</h4>
     <h4>Game End: {{game.endDate}}</h4>
+    </div>
     <div class="flex-container">
       <div class="flex-child balanceAndStocks">
         <p>My Current Balance:</p>
@@ -43,12 +45,22 @@ export default {
 </script>
 
 <style>
+.gameIntro{
+  display: flex;
+  flex-direction: column;
+  padding-left: 15%;
+  padding-bottom: 20px;
+  width: 20%;
+}
 .flex-container {
   display: flex;
+  width:80%;
+  padding-left:10%;
+  padding-right:10%;
 }
 .flex-child {
   flex: 1;
-  border: 2px solid black;
+  border: 2px solid white;
 }
 .flex-child:first-child {
   margin-right: 20px;
@@ -67,6 +79,7 @@ export default {
 }
 .backToGames{
   font-weight: bold;
+  margin-left: 10px;
 }
 .stockButton {
   background-color:#44c767;
@@ -81,6 +94,7 @@ export default {
 	text-decoration:none;
 	text-shadow:0px 1px 0px #2f6627;
   margin-right: 10px;
+  margin-bottom: 20px;
 }
 .stockButton:hover {
 	background-color:#5cbf2a;

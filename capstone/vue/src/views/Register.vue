@@ -108,7 +108,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: rgb(0,175,239,255);
+  background: rgb(26, 17, 89);
 }
 .username-line{
   display: flex;
@@ -137,7 +137,7 @@ export default {
 .sr-only {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  text-shadow: 2px 2px 4px honeydew;
+  text-shadow: 2px 2px 4px black;
   padding-right: 12px;
 }
 h1 {
@@ -150,7 +150,7 @@ h1 {
   margin: 2px;
 }
 button {
-  color: rgb(20, 140, 238);
+  color: black;
   margin: 5px;
 }
 </style>

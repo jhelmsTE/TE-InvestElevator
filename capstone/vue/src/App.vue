@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="nav">
-      <router-link v-bind:to="{ name: 'home' }">Home&nbsp;</router-link> 
+      <router-link class="homeButton" v-bind:to="{ name: 'home' }">Home</router-link>
       <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
     </div>
     <router-view />
@@ -10,9 +10,13 @@
 
 <style>
 #nav{
-  background: rgb(0,175,239,255);
+  background: rgb(26, 17, 89);
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
 }
+.homeButton{
+  padding-right: 10px;
+}
+
 </style>
