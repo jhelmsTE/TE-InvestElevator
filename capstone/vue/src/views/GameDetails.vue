@@ -3,6 +3,8 @@
     <router-link class="backToGames" :to="{name: 'viewAllGames'}">Back to View All Games</router-link>
     <h1>Game Name: {{ game.gameName }}</h1>
     <h2 class="organizer">Organizer: {{ game.username }}</h2>
+    <h4>Game Start: {{game.startDate}}</h4>
+    <h4>Game End: {{game.endDate}}</h4>
     <div class="flex-container">
       <div class="flex-child balanceAndStocks">
         <p>My Current Balance:</p>
@@ -33,8 +35,8 @@ export default {
     };
   },
   created() {
-    gameService.getGameDetails(this.$route.params.gameID).then((response) => {
-      this.game = response;
+    gameService.getGameDetails(this.$route.params.id).then((response) => {
+      this.game = response.data;
     });
   },
 };

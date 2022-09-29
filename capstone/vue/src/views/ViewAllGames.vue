@@ -1,7 +1,7 @@
 <template>
   <div class>
-    <h1>Welcome to the Game Board!</h1>
-    <h3>Here are the available games</h3>
+    <h1>Welcome to Your Game Board!</h1>
+    <h3>Here are the games you've joined</h3>
     <div class = "all-cards">
     <router-link :to="{name: 'game-details', params: {id: game.id}}" class="card" v-for="game in games" v-bind:key="game.id">
       <h4>{{ game.gameName }}</h4>
