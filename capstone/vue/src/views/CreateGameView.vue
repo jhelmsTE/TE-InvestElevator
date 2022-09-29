@@ -1,4 +1,5 @@
 <template>
+<form v-on:submit="this.$router.push({ name: 'home' })">
   <div>
     <h1>Welcome</h1>
     <h2 id="invite">Invite Players</h2>
@@ -6,7 +7,8 @@
       <input class="checkboxes" type="checkbox">
       <label for="user.id">{{ user.username }}</label>
     </div>
-    <h3 class="game-name">Game name</h3>
+    <h3 class="game-name" >Game name</h3>
+    
     <h3 class="start-date">Start Date</h3>
     <input type="date" id="start-date" />
 
@@ -16,10 +18,12 @@
     <br />
     <button type="submit" class="submit">Create Game</button>
   </div>
+</form>
 </template>
 
 <script>
 import AuthService from "../services/AuthService";
+import GameService from "../services/GameService";
 
 export default {
   data() {
@@ -35,6 +39,9 @@ export default {
       this.users = response.data;
     });
   },
+  createGameResult(){
+    GameService.createGameResult();
+  }
 };
 </script>
 
