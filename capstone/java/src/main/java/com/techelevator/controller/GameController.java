@@ -9,7 +9,7 @@ import com.techelevator.model.GameResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -19,7 +19,7 @@ public class GameController {
     private GameDao gameDao;
     private GameResultDao gameResultDao;
 
-    public GameController(UserDao userDao, GameDao gameDao) {
+    public GameController(UserDao userDao, GameDao gameDao, GameResultDao gameResultDao) {
         this.userDao = userDao;
         this.gameDao = gameDao;
         this.gameResultDao = gameResultDao;
@@ -42,11 +42,14 @@ public class GameController {
                                        newGameResult.getCashToTrade(), newGameResult.getTotalAccountValue());
     }
 
-
-
     @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.GET)
     public Game get(@PathVariable int id) throws GameNotFoundException {
         return gameDao.findGameById(id);
+    }
+
+    @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.PUT)
+    public void update(@PathVariable int id, @Valid @RequestBody Game updateGame){
+        gameDao.updateGame(id, updateGame.getStartDate(), updateGame.getEndDate(), updateGame.getGameName());
     }
 
     }

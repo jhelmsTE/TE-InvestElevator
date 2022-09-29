@@ -6,7 +6,7 @@
       <input class="checkboxes" type="checkbox">
       <label for="user.id">{{ user.username }}</label>
     </div>
-
+    <h3 class="game-name">Game name</h3>
     <h3 class="start-date">Start Date</h3>
     <input type="date" id="start-date" />
 
@@ -78,5 +78,10 @@ export default {
 .submit {
   margin-top: 20px;
   margin-left: 15px;
+}
+
+.game-name{
+  justify-content: left;
+  margin-left: 10px;
 }
 </style>
