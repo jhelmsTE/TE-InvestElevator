@@ -74,5 +74,9 @@ export default {
 }
 .return{
   text-decoration: underline;
+  font-weight: bold;
+}
+p{
+  font-weight: bold;
 }
 </style>

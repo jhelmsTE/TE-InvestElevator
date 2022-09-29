@@ -32,4 +32,9 @@ public class GameController {
     gameDao.createGame(newGame.getUsername(), newGame.getStartDate(),
             newGame.getEndDate(), newGame.getGameName(), newGame.getGameResult());
     }
+
+    @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.GET)
+    public Game get(@PathVariable int id) throws GameNotFoundException {
+        return gameDao.findGameById(id);
+    }
     }
