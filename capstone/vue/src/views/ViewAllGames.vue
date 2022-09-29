@@ -36,7 +36,7 @@ h3 {
   display: flex;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  text-shadow: 2px 2px 4px honeydew;
+  text-shadow: 2px 2px 4px black;
   padding-right: 12px;
   justify-content: center;
 }
@@ -61,8 +61,10 @@ a:link {
   flex-wrap: wrap;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  text-shadow: 2px 2px 4px honeydew;
+  text-shadow: 2px 2px 4px black;
+  text-decoration: none;
   padding-right: 12px;
-  background-color: white;
+  background-color: #44c767;
+  color: white;
 }
 </style>
