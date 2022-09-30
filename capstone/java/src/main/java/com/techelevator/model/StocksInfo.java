@@ -76,7 +76,15 @@ public class StocksInfo {
         ResponseEntity response = restTemplate.getForEntity(qualifiedUrl, String.class);
         System.out.println(response.getBody());//temporary to view return data for testing/validation
         String[] basicStockPriceInfo = response.getBody().toString().split(":");
+        String priceValue = basicStockPriceInfo[17];
+        BigDecimal closingPrice = new BigDecimal(priceValue.substring(0, priceValue.indexOf(",")));
+        System.out.println(priceValue);
+        System.out.println("--------------------------------------------------");
+        System.out.println("$" + closingPrice);
+        stockPriceInfo.setBuyPrice(closingPrice);
 
+//        System.out.println(basicStockPriceInfo[0]);
+//        System.out.println(basicStockPriceInfo[1]);
         return null;
     }
 
