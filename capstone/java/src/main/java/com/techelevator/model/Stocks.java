@@ -13,12 +13,16 @@ public class Stocks {
     public Stocks() {
     }
 
-    public Stocks(String username, int gameId, String ticker, String companyName, BigDecimal buyPrice) {
-        this.username = username;
-        this.gameId = gameId;
+//    public Stocks(String username, int gameId, String ticker, String companyName, BigDecimal buyPrice) {
+//        this.username = username;
+//        this.gameId = gameId;
+//        this.ticker = ticker;
+//        this.companyName = companyName;
+//        this.buyPrice = buyPrice;
+//    }
+    public Stocks(String ticker, String companyName){
         this.ticker = ticker;
         this.companyName = companyName;
-        this.buyPrice = buyPrice;
     }
 
     public String getUsername() {
