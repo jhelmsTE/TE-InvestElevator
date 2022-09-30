@@ -8,5 +8,5 @@ public interface StocksInfoDao {
 
 StocksInfo getStockInfo(String ticker);
 
-    BigDecimal getStockPriceFromAPI(String url);
+BigDecimal getStockPriceFromAPI(String url);
 }

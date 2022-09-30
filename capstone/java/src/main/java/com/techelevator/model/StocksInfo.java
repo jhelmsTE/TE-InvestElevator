@@ -61,9 +61,6 @@ public class StocksInfo {
         }
 
         }
-            System.out.println(stockTickerInfo.getTicker());
-            System.out.println(stockTickerInfo.getCompanyName());
-        //JsonNode node = new ObjectMapper().readTree(response.getBody());
 
         return stockTickerInfo;
     }
@@ -85,7 +82,7 @@ public class StocksInfo {
 
 //        System.out.println(basicStockPriceInfo[0]);
 //        System.out.println(basicStockPriceInfo[1]);
-        return null;
+        return stockPriceInfo;
     }
 
 
