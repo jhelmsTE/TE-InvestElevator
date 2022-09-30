@@ -23,3 +23,5 @@ VALUES ('demo-user', 101, 'APL', 'Apple', 2.58);
 COMMIT TRANSACTION;
 
 
+
+
