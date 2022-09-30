@@ -37,9 +37,8 @@ public class GameController {
     }
 
     @RequestMapping(value ="/createGameResult", method = RequestMethod.POST)
-    public void create(@Valid @RequestBody GameResult newGameResult){
-        gameResultDao.createGameResult(newGameResult.getUserId(), newGameResult.getGameId(), newGameResult.getUserName(),
-                                       newGameResult.getCashToTrade(), newGameResult.getTotalAccountValue());
+    public void create(@Valid @RequestBody GameResult[] newGameResult){
+        gameResultDao.createGameResult(newGameResult);
     }
 
     @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.GET)

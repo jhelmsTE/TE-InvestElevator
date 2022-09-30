@@ -8,7 +8,6 @@
       <label for="user.id">{{ user.username }}</label>
     </div>
 
-
     <h3 class="game-name" >Game name</h3>
     <input type="text" v-model="game.gameName"/>
 
@@ -21,7 +20,7 @@
     <br/>
    <button v-on:click="createGame(game)">Create Game</button>  
 
-   <button v-on:click="createGameResult(gameResult)">Game Result</button>
+   <button v-on:click="createGameResult(gameResults)">Game Result</button>
 
 </div>
 
@@ -33,7 +32,7 @@ import GameService from "../services/GameService";
 export default {
   data() {
     return {
-      selectedUserIDs : [],
+      selectedUsers : [],
       users: [],
       user: {
         name: "",
@@ -44,6 +43,11 @@ export default {
       endDate: "",
       gameName: "",
       gameResult: ""
+      },
+      gameResults : {
+        userId: "",
+        gameName: "",
+        userName: ""
       }
     };
   },
@@ -55,6 +59,7 @@ export default {
    },
   methods:{
   createGameResult(){
+
     GameService.createGameResult();
   },
   createGame(){
@@ -62,11 +67,12 @@ export default {
       GameService.create(this.game);
     },
     addUser(id){
-     if(!this.selectedUserIDs.includes(id)){
-      this.selectedUserIDs.push(id)
-      console.log(this.selectedUserIDs.length)
+     if(!this.selectedUsers.includes(id)){
+      this.selectedUsers.push(this.gameResults)
+      console.log(this.selectedUsers.length)
+      console.log(this.gameResults)
      }else{
-      this.selectedUserIDs = this.selectedUserIDs.filter((element) => {
+      this.selectedUsers = this.selectedUsers.filter((element) => {
         return element != id
       })
      }

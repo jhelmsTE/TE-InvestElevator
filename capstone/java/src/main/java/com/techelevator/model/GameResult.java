@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 public class GameResult {
         private int userId;
         private int gameId;
+        private String gameName;
         private String userName;
         private BigDecimal cashToTrade = new BigDecimal(100000);
         private BigDecimal totalAccountValue = new BigDecimal(100000);
@@ -12,13 +13,22 @@ public class GameResult {
         public GameResult(){
         }
 
-    public GameResult(int userId, int gameId, String userName, BigDecimal cashToTrade,
+    public GameResult(int userId, int gameId, String gameName, String userName, BigDecimal cashToTrade,
                       BigDecimal totalAccountValue) {
         this.userId = userId;
         this.gameId = gameId;
+        this.gameName = gameName;
         this.userName = userName;
         this.cashToTrade = cashToTrade;
         this.totalAccountValue = totalAccountValue;
+    }
+
+    public String getGameName() {
+        return gameName;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
     }
 
     public int getUserId() {

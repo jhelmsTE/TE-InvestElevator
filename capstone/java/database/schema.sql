@@ -40,6 +40,7 @@ CREATE TABLE game_results (
 	user_id int NOT NULL,
 	game_id int NOT NULL,
 	username varchar(50) NOT NULL,
+	game_name varchar(50) NOT NULL,
 	cash_to_trade decimal DEFAULT 100000,
 	total_account_value decimal DEFAULT 100000,
 	-- keep an eye on total_account_value's starting amount
