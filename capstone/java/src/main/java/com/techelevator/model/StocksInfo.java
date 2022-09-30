@@ -61,9 +61,6 @@ public class StocksInfo {
         }
 
         }
-            System.out.println(stockTickerInfo.getTicker());
-            System.out.println(stockTickerInfo.getCompanyName());
-        //JsonNode node = new ObjectMapper().readTree(response.getBody());
 
         return stockTickerInfo;
     }

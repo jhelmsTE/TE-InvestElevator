@@ -1,7 +1,7 @@
 <template>
   <div class>
-    <h1>Welcome to Your Game Board!</h1>
-    <h3>Here are the games you've joined</h3>
+    <h1>Welcome to the Game Board!</h1>
+    <h3>Here are the games you can join! Click a game to join</h3>
     <div class="searchBar">
       <input type="text" v-model="selectedGame" placeholder="Search games..." />
     </div>

@@ -1,9 +1,12 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.GameResult;
+
 import java.math.BigDecimal;
 
 public interface GameResultDao {
-    boolean createGameResult(int userId, int gameId, String userName,
-                             BigDecimal cashToTrade, BigDecimal totalAccountValue);
+    void createGameResult(GameResult [] gameResults);
+
+    int findIdByGameName(String gameName);
 
 }

@@ -5,6 +5,7 @@ import Login from '../views/Login.vue'
 import Logout from '../views/Logout.vue'
 import Register from '../views/Register.vue'
 import store from '../store/index'
+import JoinGame from '../views/JoinGame.vue'
 import CreateGameView from '../views/CreateGameView.vue'
 import ViewAllGames from '../views/ViewAllGames.vue'
 import GameDetails from '../views/GameDetails.vue'
@@ -62,6 +63,14 @@ const router = new Router({
       path: '/CreateGameView',
       name: 'game-view',
       component: CreateGameView,
+      meta: {
+        requiresAuth: true
+      }
+    },
+    {
+      path:'/joinGame',
+      name: 'joinGame',
+      component: JoinGame,
       meta: {
         requiresAuth: true
       }
