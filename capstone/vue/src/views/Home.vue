@@ -7,7 +7,7 @@
     <div class= "user" v-for="user in $store.state" v-bind:key="user.id">
       <p>{{user.username}}</p>
     </div>
-    <div v-on:click="createGame(game)">
+    <div >
   <router-link :to="{name: 'game-view'}" class="create-game"  >
     Create Game
   </router-link>
@@ -32,13 +32,6 @@ export default {
     return {
       user: {
         username:"",
-      },
-      game: {
-      username: "",
-      startDate: "2022-10-27",
-      endDate: "2022-10-27",
-      gameName: "",
-      gameResult: ""
       }
     }
   }, 
