@@ -14,11 +14,12 @@ INSERT INTO games (organizer_id,start_date,end_date,game_name)
 INSERT INTO games (organizer_id,start_date,end_date,game_name) 
     VALUES ('demo-user', '2022-10-28', '2022-11-28', 'Demo Game 2');
 
-INSERT INTO stocks (username, game_id, ticker, company_name, buy_price)
-    VALUES ('demo-user', 1, 'APL', 'Apple', 2.58);
+ INSERT INTO stocks (username, game_id, ticker, company_name, buy_price)
+VALUES ('demo-user', 101, 'APL', 'Apple', 2.58);
 
-INSERT INTO stocks (username, game_id, ticker, company_name, buy_price)
-    VALUES ('demo-user', 1, 'TSL', 'Tesla', 5.77);
+ INSERT INTO stocks (username, game_id, ticker, company_name, buy_price)
+ VALUES ('demo-user', 101, 'TSL', 'Tesla', 5.77);
 
 COMMIT TRANSACTION;
+
 
