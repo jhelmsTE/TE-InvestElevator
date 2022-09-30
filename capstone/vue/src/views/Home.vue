@@ -10,7 +10,7 @@
     </router-link>
     <br />
     <router-link :to="{ name: 'viewAllGames' }" class="current-games">
-      View all Current Games
+      View Your Games
     </router-link>
     <br />
     <router-link :to="{ name: 'joinGame' }" class="join-game">
