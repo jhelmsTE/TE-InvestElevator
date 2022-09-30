@@ -85,7 +85,7 @@ public class StocksInfo {
 
 //        System.out.println(basicStockPriceInfo[0]);
 //        System.out.println(basicStockPriceInfo[1]);
-        return null;
+        return stockPriceInfo;
     }
 
 
