@@ -3,10 +3,12 @@
   <div>
     <h1>Welcome</h1>
     <h2 id="invite">Invite Players</h2>
-    <div class="checkBoxForm" v-for="user in users" v-bind:key="user.id">
+    <div class="checkBoxForm" v-for="user in users" v-bind:key="user.id"  v-on:click='addUser(user.id)'>
       <input class="checkboxes" type="checkbox">
       <label for="user.id">{{ user.username }}</label>
     </div>
+
+
     <h3 class="game-name" >Game name</h3>
     <input type="text" v-model="game.gameName"/>
 
@@ -16,8 +18,11 @@
     <h3 class="end-date">End date</h3>
     <input type="date" id="end-date" v-model="game.endDate"/>
 
-    <br />
+    <br/>
    <button v-on:click="createGame(game)">Create Game</button>  
+
+   <button v-on:click="createGameResult(gameResult)">Game Result</button>
+
 </div>
 
 </form>
@@ -28,14 +33,15 @@ import GameService from "../services/GameService";
 export default {
   data() {
     return {
+      selectedUserIDs : [],
       users: [],
       user: {
         name: "",
       },
       game: {
       username: "",
-      startDate: "2022-10-10",
-      endDate: "2022-11-11",
+      startDate: "",
+      endDate: "",
       gameName: "",
       gameResult: ""
       }
@@ -54,9 +60,19 @@ export default {
   createGame(){
       this.game.username = this.$store.state.user.username
       GameService.create(this.game);
-    }
+    },
+    addUser(id){
+     if(!this.selectedUserIDs.includes(id)){
+      this.selectedUserIDs.push(id)
+      console.log(this.selectedUserIDs.length)
+     }else{
+      this.selectedUserIDs = this.selectedUserIDs.filter((element) => {
+        return element != id
+      })
+     }
   }
-};
+}
+}
 </script>
 <style>
 #invite {

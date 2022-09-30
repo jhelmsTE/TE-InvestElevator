@@ -9,6 +9,7 @@ public class Stocks {
     private String ticker;
     private String companyName;
     private BigDecimal buyPrice;
+    private int transactionId;
 
     public Stocks() {
     }
@@ -65,7 +66,11 @@ public class Stocks {
         this.buyPrice = buyPrice;
     }
 
+    public int getTransactionId() {return transactionId;}
 
+    public void setTransactionId(int transactionId) {
+        this.transactionId = transactionId;
+    }
 
     @Override
     public String toString() {
