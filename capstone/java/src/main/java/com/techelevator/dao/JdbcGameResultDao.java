@@ -14,27 +14,22 @@ public class JdbcGameResultDao implements GameResultDao {
 
     @Override
     public int findIdByGameName(String gameName) {
-        int gameId = jdbcTemplate.queryForObject("SELECT game_id FROM games WHERE game_name = ?", int.class, gameName);
-        return gameId;
+        Integer id = 0;
+       String sql = "SELECT game_id FROM games WHERE game_name = ?";
+       SqlRowSet gameId = jdbcTemplate.queryForRowSet(sql, gameName);
+       if(gameId.next()){
+           id = gameId.getInt("game_id");
+       }
+       return id;
     }
 
     @Override
     public void createGameResult(GameResult [] gameResults) {
-        // gameResult : {
-//        userId: 1,
-//        gameName: FirstGame
-//        username: jhelms
-//    }
-        
+
         for (GameResult eachGameResult : gameResults) {
 
             // call a method that finds gameId by gameName (eachGameResult.getGameName)
-            /*
-            passed in :
-            userid
-            gamename
-            username
-             */
+
             String name = eachGameResult.getGameName();
             int gameId =  findIdByGameName(name);// result from method
             eachGameResult.setGameId(gameId);
@@ -43,11 +38,11 @@ public class JdbcGameResultDao implements GameResultDao {
 
         for (GameResult eachGameResult : gameResults) {
 
-            String sql = "insert into game_results (user_id, game_id, game_name " +
-                    "username, cash_to_trade, total_account_value) values (?,?,?,?,?,?)";
+            String sql = "insert into game_results (user_id, game_id, username, " +
+                    "game_name, cash_to_trade, total_account_value) values (?,?,?,?,?,?)";
 
             jdbcTemplate.update(sql, eachGameResult.getUserId(),
-                    eachGameResult.getGameId(), eachGameResult.getUserName(),eachGameResult.getCashToTrade()
+                    eachGameResult.getGameId(), eachGameResult.getUserName(), eachGameResult.getGameName(), eachGameResult.getCashToTrade()
                     ,eachGameResult.getTotalAccountValue());
         }
 

@@ -7,6 +7,6 @@ import java.math.BigDecimal;
 public interface GameResultDao {
     void createGameResult(GameResult [] gameResults);
 
-    int findIdByGameName(String gameName);
+     int findIdByGameName(String gameName);
 
 }

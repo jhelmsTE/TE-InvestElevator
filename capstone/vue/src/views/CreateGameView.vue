@@ -1,10 +1,10 @@
 <template>
-<form v-on:submit="this.$router.push({ name: 'home' })">
+<form v-on:submit.prevent>
   <div>
     <h1>Welcome</h1>
     <h2 id="invite">Invite Players</h2>
-    <div class="checkBoxForm" v-for="user in users" v-bind:key="user.id"  v-on:click='addUser(user.id)'>
-      <input class="checkboxes" type="checkbox">
+    <div class="checkBoxForm" v-for="user in users" v-bind:key="user.id" >
+      <input class="checkboxes" type="checkbox" v-on:click='addUser(user.id, user.username)'>
       <label for="user.id">{{ user.username }}</label>
     </div>
 
@@ -18,9 +18,8 @@
     <input type="date" id="end-date" v-model="game.endDate"/>
 
     <br/>
-   <button v-on:click="createGame(game)">Create Game</button>  
-
-   <button v-on:click="createGameResult(gameResults)">Game Result</button>
+   <button v-on:click="createGame(game)">Create Game</button> 
+   <button v-on:click="createGameResult()">Add Players</button> 
 
 </div>
 
@@ -32,7 +31,7 @@ import GameService from "../services/GameService";
 export default {
   data() {
     return {
-      selectedUsers : [],
+      selectedGameResultUsers : [],
       users: [],
       user: {
         name: "",
@@ -54,30 +53,34 @@ export default {
    created() {
     AuthService.getUsers().then((response) => {
       this.users = response.data;
-
     });
    },
   methods:{
   createGameResult(){
-
-    GameService.createGameResult();
+    GameService.createGameResult(this.selectedGameResultUsers);
+    this.selectedGameResultUsers = [];
+    this.game = {};
+    this.$router.push({name: "home"})
   },
+ 
   createGame(){
       this.game.username = this.$store.state.user.username
       GameService.create(this.game);
+      
     },
-    addUser(id){
-     if(!this.selectedUsers.includes(id)){
-      this.selectedUsers.push(this.gameResults)
-      console.log(this.selectedUsers.length)
-      console.log(this.gameResults)
-     }else{
-      this.selectedUsers = this.selectedUsers.filter((element) => {
-        return element != id
-      })
+    addUser(id, username){
+      console.log(id)
+      console.log(username)
+      this.gameResults.userId = id;
+      this.gameResults.userName = username;
+      this.gameResults.gameName = this.game.gameName;
+      this.selectedGameResultUsers.push(this.gameResults)
+      this.gameResults = { userId: "",
+        gameName: "",
+        userName: ""}
+      console.log(this.selectedGameResultUsers.length)
+      }
      }
-  }
-}
 }
 </script>
 <style>
