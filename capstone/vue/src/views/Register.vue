@@ -110,6 +110,13 @@ export default {
   min-height: 100vh;
   background: rgb(26, 17, 89);
 }
+.form-register{
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+}
 .username-line{
   display: flex;
   justify-content: space-between;

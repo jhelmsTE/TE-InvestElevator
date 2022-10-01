@@ -1,6 +1,6 @@
 <template>
   <div id="login" class="text-center">
-    <form class="form-signin" @submit.prevent="login">
+    <form class="form-signin signInBorder" @submit.prevent="login">
       <h1 class="h3 mb-3 font-weight-normal">Please Sign In</h1>
       <div
         class="alert alert-danger"
@@ -87,10 +87,12 @@ export default {
 }
 .sr-only{
 display: flex;
+justify-content: center;
 margin-top: 4px;
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 font-weight: bold;
 text-shadow: 2px 2px 4px black;
+padding-top: 10px;
 }
 
 h1{
@@ -106,7 +108,6 @@ h1{
 }
 
 button{
-  
   color:black;
   margin: 5px;
 }
@@ -115,6 +116,19 @@ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 font-weight: bold;
 margin-bottom: 10px;
 text-shadow: 2px 3px 4px honeydew;
+}
+
+.signInBorder{
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px;
+}
+
+.need-account{
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 
 </style>
