@@ -12,6 +12,7 @@ import com.techelevator.model.StockTickerNotFoundException;
 import com.techelevator.model.StocksInfo;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
 @CrossOrigin
 public class StocksController {

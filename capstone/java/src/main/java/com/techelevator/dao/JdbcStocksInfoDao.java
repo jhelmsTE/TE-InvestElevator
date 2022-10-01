@@ -1,10 +1,23 @@
 package com.techelevator.dao;
 
-public class JdbcStocksInfoDao {
+import com.techelevator.model.StocksInfo;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
+
+@Component
+public class JdbcStocksInfoDao implements StocksInfoDao{
     private static final String API_BASE_URL = "https://api.polygon.io/v3/reference/tickers/";
     private static final String API_BASE_KEY = "?apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
 
+    @Override
+    public StocksInfo getStockInfo(String ticker) {
+        return null;
+    }
 
-
+    @Override
+    public BigDecimal getStockPriceFromAPI(String url) {
+        return null;
+    }
 }
