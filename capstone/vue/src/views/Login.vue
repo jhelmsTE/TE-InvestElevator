@@ -97,7 +97,7 @@ padding-top: 10px;
 
 h1{
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-shadow: 2px 3px 4px honeydew;
+  text-shadow: 2px 3px 4px black;
 }
 .need-account{
   justify-content: center;
@@ -115,11 +115,11 @@ button{
 font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 font-weight: bold;
 margin-bottom: 10px;
-text-shadow: 2px 3px 4px honeydew;
+text-shadow: 2px 3px 4px black;
 }
 
 .signInBorder{
-  border: 2px solid white;
+  border: 2px solid limegreen;
   display: flex;
   flex-direction: column;
   justify-content: center;

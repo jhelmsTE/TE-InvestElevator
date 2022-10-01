@@ -87,7 +87,7 @@ export default {
 #invite {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  text-shadow: 2px 2px 4px honeydew;
+  text-shadow: 2px 2px 4px black;
   text-align: left;
   margin-left: 10px;
 }
@@ -96,7 +96,7 @@ export default {
   padding-bottom: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
-  text-shadow: 2px 2px 4px honeydew;
+  text-shadow: 2px 2px 4px black;
 }
 .checkboxes {
   margin-right: 10px;
