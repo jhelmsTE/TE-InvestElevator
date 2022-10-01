@@ -2,11 +2,6 @@ package com.techelevator.controller;
 
 
 import com.techelevator.model.Stocks;
-import com.techelevator.model.StocksInfo;
-
-public class StocksController {
-
-
 import com.techelevator.dao.*;
 import com.techelevator.model.StockTickerNotFoundException;
 import com.techelevator.model.StocksInfo;
@@ -35,9 +30,6 @@ public class StocksController {
 public void buyStock(@PathVariable String ticker) throws StockTickerNotFoundException {
 
     }
-
-
-
->>>>>>> main
+    
 }
 
