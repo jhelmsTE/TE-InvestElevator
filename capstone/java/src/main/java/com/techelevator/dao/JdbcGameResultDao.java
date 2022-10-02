@@ -38,8 +38,8 @@ public class JdbcGameResultDao implements GameResultDao {
 
         for (GameResult eachGameResult : gameResults) {
 
-            String sql = "insert into game_results (user_id, game_id, username, " +
-                    "game_name, cash_to_trade, total_account_value) values (?,?,?,?,?,?)";
+            String sql = "INSERT into game_results (user_id, game_id, username, " +
+                    "game_name, cash_to_trade, total_account_value) VALUES (?,?,?,?,?,?)";
 
             jdbcTemplate.update(sql, eachGameResult.getUserId(),
                     eachGameResult.getGameId(), eachGameResult.getUserName(), eachGameResult.getGameName(), eachGameResult.getCashToTrade()

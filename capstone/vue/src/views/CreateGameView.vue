@@ -1,30 +1,32 @@
 <template>
 <form v-on:submit.prevent>
-  <div>
     <h1>Welcome</h1>
-    <h2 id="invite">Invite Players</h2>
-    <div class="checkBoxForm" v-for="user in users" v-bind:key="user.id" >
-      <input class="checkboxes" type="checkbox" v-on:click='addUser(user.id, user.username)'>
-      <label for="user.id">{{ user.username }}</label>
-    </div>
-
+  
+     <div class="flex-container">
+  
+    <div class="flex-child left-side">
+    <h3 class ="create-game">Create Game</h3>
     <h3 class="game-name" >Game name</h3>
     <input type="text" v-model="game.gameName"/>
-
     <h3 class="start-date">Start Date</h3>
     <input type="date" id="start-date" v-model="game.startDate"/>
-
     <h3 class="end-date">End date</h3>
     <input type="date" id="end-date" v-model="game.endDate"/>
-
-    <br/>
+    <br><br/>
    <button v-on:click="createGame(game)">Create Game</button> 
+    </div>
+    <div class="flex-child right-side">
+    <h2 id="invite">Add Players</h2>
+    <select name="name" id="select-users" multiple>
+    <option value="vue" v-for="user in users" v-bind:key="user.id" 
+    v-on:click='addUser(user.id, user.username)'>{{user.username}}</option>
+    </select>
    <button v-on:click="createGameResult()">Add Players</button> 
-
+  </div>
 </div>
-
 </form>
 </template>
+
 <script>
 import AuthService from "../services/AuthService";
 import GameService from "../services/GameService";
@@ -123,6 +125,29 @@ export default {
 .game-name{
   justify-content: left;
   margin-left: 10px;
+}
+
+.create-game{
+  justify-content: left;
+  margin-left: 10px;
+}
+
+.flex-child.left-side{
+  display: flex;
+  justify-content: right;
+  border: white solid 1px;
+  flex-direction: column;
+ 
+}
+.flex-child.right-side{
+   display: flex;
+  justify-content: right;
+  border: white solid 1px;
+  flex-direction: column;
+}
+.flex-container{
+  display: flex;
+
 }
 </style>
 
