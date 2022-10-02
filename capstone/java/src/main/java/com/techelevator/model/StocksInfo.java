@@ -20,12 +20,12 @@ public class StocksInfo {
 //    private String nameValue;
 //    private String stockName;
 
-//PT 1 of 3: API URL
+    //PT 1 of 3: API URL
     private static final String API_INFO_BASE_URL = "https://api.polygon.io/v3/reference/tickers/";
     private static final String API_PRICE_BASE_URL = "https://api.polygon.io/v2/aggs/ticker/";
 
     // PT 2 of 3: API URL - 'ticker' variable will change based on user input
-    private String ticker = "NFLX";
+    private String ticker;
     private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2021-09-28/2021-09-29?adjusted=true";
 
     //PT 3 of 3: API URL -
@@ -78,7 +78,7 @@ public class StocksInfo {
         System.out.println(priceValue);
         System.out.println("--------------------------------------------------");
         System.out.println("$" + closingPrice);
-        stockPriceInfo.setBuyPrice(closingPrice);
+        stockPriceInfo.setStockPrice(closingPrice);
 
 //        System.out.println(basicStockPriceInfo[0]);
 //        System.out.println(basicStockPriceInfo[1]);

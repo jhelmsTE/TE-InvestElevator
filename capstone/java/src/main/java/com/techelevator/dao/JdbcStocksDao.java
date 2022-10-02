@@ -43,36 +43,51 @@ public class JdbcStocksDao implements StocksDao {
         return stocks;
     }
 
-    @Override
-   public Stocks sellStockByTicker(String username, int gameId, String ticker) {
-    Stocks stocks = new Stocks();
-        String deleteStock = "DELETE FROM stocks (username, game_id, ticker, company_name, buy_price) " +
-                "VALUES (?, ?, ? (SELECT company_name FROM stocks where ticker = ?), " +
-                "(SELECT buy_price FROM stocks WHERE ticker = ?));";
+//    @Override
+//   public Stocks sellStockByTicker(String username, int gameId, String ticker) {
+//    Stocks stocks = new Stocks();
+//        String deleteStock = "DELETE FROM stocks (username, game_id, ticker, company_name, buy_price) " +
+//                "VALUES (?, ?, ? (SELECT company_name FROM stocks where ticker = ?), " +
+//                "(SELECT buy_price FROM stocks WHERE ticker = ?));";
+//
+//        return stocks;
+//}
 
-        return stocks;
-}
+    @Override
+    public void createStock(Stocks stocks) {
+        String createStock = "INSERT INTO stocks (username, game_id, ticker, stock_price, " +
+                "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+        jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
+                stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
+                stocks.getSharesSold(), stocks.getSharesPerTicker(),
+                stocks.getCompanyName());
+    }
 
     @Override
     public Stocks buyStockByTicker(String username, int gameId, String ticker) {
         Stocks stocks = new Stocks();
-        String companyName = "SELECT company_name FROM stocks WHERE ticker = ?;";
-        String buyPrice = "SELECT buy_price FROM stocks WHERE ticker = ?;";
 
         String insertStock = "INSERT INTO stocks (username, game_id, ticker, company_name, buy_price) " +
                 "VALUES (companyName, buyPrice, ? (SELECT company_name FROM stocks where ticker = ?), " +
                 "(SELECT buy_price FROM stocks WHERE ticker = ?));";
-
+//        String companyName = "SELECT company_name FROM stocks WHERE ticker = ?;";
+//        String buyPrice = "SELECT buy_price FROM stocks WHERE ticker = ?;";
         return stocks;
     }
 
     private Stocks mapRowToStocks(SqlRowSet rs) {
         Stocks stocks = new Stocks();
-        stocks.setGameId(rs.getInt("game_id"));
         stocks.setUsername(rs.getString("username"));
+        stocks.setGameId(rs.getInt("game_id"));
         stocks.setTicker(rs.getString("ticker"));
+        stocks.setStockPrice(rs.getBigDecimal("stock_price"));
+        stocks.setSharesPurchased(rs.getInt("shares_purchased"));
+        stocks.setSharesSold(rs.getInt("shares_sold"));
+        stocks.setTransactionId(rs.getInt("transaction_id"));
+        stocks.setSharesPerTicker(rs.getInt("shares_per_ticker"));
         stocks.setCompanyName(rs.getString("company_name"));
-        stocks.setBuyPrice(rs.getBigDecimal("buy_price"));
+
         return stocks;
     }
 

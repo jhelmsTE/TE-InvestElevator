@@ -43,10 +43,6 @@ CREATE TABLE game_results (
 	game_name varchar(50) NOT NULL,
 	cash_to_trade decimal DEFAULT 100000,
 	total_account_value decimal DEFAULT 100000,
-	-- keep an eye on total_account_value's starting amount
-	-- do we want to instantiate it with an equation(?) or
-	-- with the starting $100k value? Not sure just yet.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      
-	
 	-- spot saved for (realtime / all-time results columns)
 	--is there a way to include list of purchased stocks here, or is that a separate table?
 	CONSTRAINT PK_game_results PRIMARY KEY(user_id, game_id),
@@ -61,14 +57,17 @@ INCREMENT BY 1
 START WITH 1
 NO MAXVALUE;
 
---what a separate stocks stable might look like:
+-- Here's the workhorse during each Stock Game
 CREATE TABLE stocks (
 	username varchar(50) NOT NULL,
 	game_id int NOT NULL,
-	ticker varchar(10) NOT NULL,
-	company_name varchar(50),
-	buy_price decimal,
+	ticker varchar(20) NOT NULL,
+	stock_price decimal,
+	shares_purchased int,
+	shares_sold int,
 	transaction_id int NOT NULL DEFAULT nextval('seq_transaction_id'),
+	shares_per_ticker int,
+	company_name varchar(50),
 	--CONSTRAINT PK_stocks PRIMARY KEY (user_id),
 	CONSTRAINT FK_stocks_from_users FOREIGN KEY (username) REFERENCES users(username),
 	CONSTRAINT FK_stocks_from_games FOREIGN KEY (game_id) REFERENCES games(game_id)

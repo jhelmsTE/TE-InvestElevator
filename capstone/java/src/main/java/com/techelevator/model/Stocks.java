@@ -7,20 +7,50 @@ public class Stocks {
     private String username;
     private int gameId;
     private String ticker;
-    private String companyName;
-    private BigDecimal buyPrice;
+
+    private BigDecimal stockPrice;
+    private int sharesPurchased;
+    private int sharesSold;
     private int transactionId;
+    private int sharesPerTicker;
+
+    private String companyName;
 
     public Stocks() {
     }
 
-//    public Stocks(String username, int gameId, String ticker, String companyName, BigDecimal buyPrice) {
-//        this.username = username;
-//        this.gameId = gameId;
-//        this.ticker = ticker;
-//        this.companyName = companyName;
-//        this.buyPrice = buyPrice;
-//    }
+    public BigDecimal getStockPrice() {
+        return stockPrice;
+    }
+
+    public void setStockPrice(BigDecimal stockPrice) {
+        this.stockPrice = stockPrice;
+    }
+
+    public int getSharesPurchased() {
+        return sharesPurchased;
+    }
+
+    public void setSharesPurchased(int sharesPurchased) {
+        this.sharesPurchased = sharesPurchased;
+    }
+
+    public int getSharesSold() {
+        return sharesSold;
+    }
+
+    public void setSharesSold(int sharesSold) {
+        this.sharesSold = sharesSold;
+    }
+
+    public int getSharesPerTicker() {
+        return sharesPerTicker;
+    }
+
+    public void setSharesPerTicker(int sharesPerTicker) {
+        this.sharesPerTicker = sharesPerTicker;
+    }
+
     public Stocks(String ticker, String companyName){
         this.ticker = ticker;
         this.companyName = companyName;
@@ -58,13 +88,8 @@ public class Stocks {
         this.companyName = companyName;
     }
 
-    public BigDecimal getBuyPrice() {
-        return buyPrice;
-    }
 
-    public void setBuyPrice(BigDecimal buyPrice) {
-        this.buyPrice = buyPrice;
-    }
+
 
     public int getTransactionId() {return transactionId;}
 
@@ -75,13 +100,18 @@ public class Stocks {
     @Override
     public String toString() {
         return "Stocks{" +
-                "username=" + username +
-                ", gameId='" + gameId + '\'' +
+                "username='" + username + '\'' +
+                ", gameId=" + gameId +
                 ", ticker='" + ticker + '\'' +
+                ", stockPrice=" + stockPrice +
+                ", sharesPurchased=" + sharesPurchased +
+                ", sharesSold=" + sharesSold +
+                ", transactionId=" + transactionId +
+                ", sharesPerTicker=" + sharesPerTicker +
                 ", companyName='" + companyName + '\'' +
-                ", buyPrice='" + buyPrice + '\'' +
                 '}';
     }
+
 
 
 }
