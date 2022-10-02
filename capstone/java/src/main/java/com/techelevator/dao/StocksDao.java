@@ -10,10 +10,10 @@ public interface StocksDao {
 
     Stocks getCompanyNameByTicker(String ticker);
 
-    Stocks buyStockByTicker(String username, int gameId, String ticker);
+
 
 //    Stocks sellStockByTicker(String username, int gameId, String ticker);
 
-    void createStock(Stocks stocks);
+    void CreateNewStockTransaction(Stocks stocks);
 
 }

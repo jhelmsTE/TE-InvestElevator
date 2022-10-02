@@ -34,11 +34,16 @@ public void buyStock(@PathVariable String ticker) throws StockTickerNotFoundExce
 
     }
 
+    @RequestMapping(value = "/sell/{ticker}", method = RequestMethod.PUT)
+    public void sellStock(@PathVariable String ticker) throws StockTickerNotFoundException {
+
+    }
+
     @RequestMapping(value = "/obj", method = RequestMethod.POST)
     public void createStocksObject(@RequestBody Stocks stocks){
        StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
         stocks.setStockPrice(stocksInfo.getStockPriceInfoFromAPI().getStockPrice());
-        stocksDao.createStock(stocks);
+        stocksDao.CreateNewStockTransaction(stocks);
     }
 
     

@@ -54,7 +54,7 @@ public class JdbcStocksDao implements StocksDao {
 //}
 
     @Override
-    public void createStock(Stocks stocks) {
+    public void CreateNewStockTransaction(Stocks stocks) {
         String createStock = "INSERT INTO stocks (username, game_id, ticker, stock_price, " +
                 "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
@@ -64,17 +64,7 @@ public class JdbcStocksDao implements StocksDao {
                 stocks.getCompanyName());
     }
 
-    @Override
-    public Stocks buyStockByTicker(String username, int gameId, String ticker) {
-        Stocks stocks = new Stocks();
 
-        String insertStock = "INSERT INTO stocks (username, game_id, ticker, company_name, buy_price) " +
-                "VALUES (companyName, buyPrice, ? (SELECT company_name FROM stocks where ticker = ?), " +
-                "(SELECT buy_price FROM stocks WHERE ticker = ?));";
-//        String companyName = "SELECT company_name FROM stocks WHERE ticker = ?;";
-//        String buyPrice = "SELECT buy_price FROM stocks WHERE ticker = ?;";
-        return stocks;
-    }
 
     private Stocks mapRowToStocks(SqlRowSet rs) {
         Stocks stocks = new Stocks();

@@ -1,6 +1,12 @@
 <template>
   <div>
     <router-link class="backToGames" :to="{name: 'viewAllGames'}">Back to View All Games</router-link>
+    <div class="joinGame">
+      To join this game, click the "Join Game" button here: 
+    <div v-for="user in users" v-bind:key="user.id">
+    <button v-on:click='addUser(user.id, user.username)' v-show="user.username === $store.state.user.username">Join Game</button>
+    </div>
+    </div>
     <h1>Game Name: {{ game.gameName }}</h1>
     <div class="gameIntro">
     <h2 class="organizer">Organizer: {{ game.username }}</h2>
@@ -16,6 +22,7 @@
       </div>
       <div class="flex-child participantsAndBalances">
         <p>Game Participants and Current Balances</p>
+        <p v-for="user in users" v-bind:key="user.id">{{user.username}}</p>
       </div>
     </div>
   </div>
@@ -23,10 +30,17 @@
 
 <script>
 import gameService from "../services/GameService";
+import authService from "../services/AuthService";
 
 export default {
   data() {
     return {
+      selectedGameResultUsers: [],
+      users: [],
+      user: {
+        id: "",
+        username: "",
+      },
       game: {
         username: "",
         startDate: "",
@@ -34,12 +48,30 @@ export default {
         gameName: "",
         gameResult: "",
       },
+      gameResults : {
+        userId: "",
+        gameName: "",
+        userName: ""
+      }
     };
   },
   created() {
+    authService.getUsers().then((response) => {
+      this.users = response.data;
+    });
     gameService.getGameDetails(this.$route.params.id).then((response) => {
       this.game = response.data;
     });
+  },
+  methods: {
+    addUser(id, username){
+      this.gameResults.userId = id;
+      this.gameResults.userName = username;
+      this.gameResults.gameName = this.game.gameName;
+      this.selectedGameResultUsers.push(this.gameResults)
+      this.gameResults = { userId: "", gameName: "", userName: ""}
+      gameService.createGameResult(this.selectedGameResultUsers);
+      }
   },
 };
 </script>
@@ -71,7 +103,6 @@ export default {
 }
 .participantsAndBalances{
   padding-left: 10px;
-  text-decoration: underline;
   font-weight: bold;
 }
 .stocksOwned{
@@ -102,5 +133,12 @@ export default {
 .stockButton:active {
 	position:relative;
 	top:1px;
+}
+.joinGame{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 30px;
+  padding-left: 10px;
 }
 </style>
