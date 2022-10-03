@@ -28,8 +28,12 @@ public class StocksController {
         this.stocksInfoDao = stocksInfoDao;
 
     }
-
-
+@RequestMapping(value = "/leaderboard/{gameId}", method = RequestMethod.GET)
+public void getLeaderboard(@PathVariable int gameId) {
+        Stocks stocks = new Stocks();
+        stocks.setGameId(gameId);
+        stocksDao.displayLeaderboard(stocks);
+}
 
     @RequestMapping(value = "/obj", method = RequestMethod.POST)
     public void createStocksObject(@RequestBody Stocks stocks){

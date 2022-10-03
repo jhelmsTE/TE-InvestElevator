@@ -16,6 +16,6 @@ public interface StocksDao {
 
     void createNewStockTransaction(Stocks stocks);
 
-
+    Stocks displayLeaderboard(Stocks stocks);
 
 }

@@ -60,19 +60,19 @@ public class JdbcStocksDao implements StocksDao {
     public void createNewStockTransaction(Stocks stocks) {
         BigDecimal cash = (stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold()))).subtract(
                 stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased())));
-        String Sql =  "SELECT shares_owned from user_shares_vw WHERE " +
-        "game_id = ? AND username = ? AND ticker = ?;";
-        Integer userShareCheck = jdbcTemplate.queryForObject(Sql,Integer.class,
+        String Sql = "SELECT shares_owned from user_shares_vw WHERE " +
+                "game_id = ? AND username = ? AND ticker = ?;";
+        Integer userShareCheck = jdbcTemplate.queryForObject(Sql, Integer.class,
                 stocks.getGameId(), stocks.getUsername(), stocks.getTicker());
 
         if (stocks.getSharesSold() > userShareCheck) {
-        throw new InsufficientSharesException();
+            throw new InsufficientSharesException();
         }
         Sql = "SELECT cash_to_trade from game_results WHERE " +
-        "game_id = ? AND username = ?;";
+                "game_id = ? AND username = ?;";
         BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
-        if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo( userCashCheck) > 0) {
-        throw new InsufficientFundsException();
+        if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
+            throw new InsufficientFundsException();
         } else {
             String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
                     "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
@@ -83,8 +83,23 @@ public class JdbcStocksDao implements StocksDao {
             jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
                     stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
                     stocks.getSharesSold(), stocks.getSharesPerTicker(),
-                    stocks.getCompanyName(), cash, cash, stocks.getUsername());
+                    stocks.getCompanyName(), cash, cash, stocks.getGameId(), stocks.getUsername());
         }
+    }
+
+    @Override
+    public Stocks displayLeaderboard(Stocks stocks) {
+        // Once the timer hits "0" (i.e. the "end date and time" has arrived)
+        // and a 'Game' has ended, then we want to call this method to 'displayLeaderboard'
+        Stocks showLeaderboard = new Stocks();
+        String Sql = "SELECT * FROM portfolio_values_vw" +
+                "WHERE game_id = ?" +
+                "ORDER BY portfolio_value DESC;";
+       SqlRowSet leaderboard = jdbcTemplate.queryForRowSet(Sql, stocks.getGameId());
+       while (leaderboard.next()) {
+           showLeaderboard = mapRowToStocks(leaderboard);
+       }
+       return showLeaderboard;
     }
 
 
