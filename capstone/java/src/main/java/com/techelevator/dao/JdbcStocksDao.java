@@ -71,8 +71,8 @@ public class JdbcStocksDao implements StocksDao {
         Sql = "SELECT cash_to_trade from game_results WHERE " +
                 "game_id = ? AND username = ?;";
 
-        BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
 
+        BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
         if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
             throw new InsufficientFundsException();
         } else {
@@ -88,8 +88,25 @@ public class JdbcStocksDao implements StocksDao {
                     stocks.getCompanyName(), cash, cash, stocks.getGameId(), stocks.getUsername());
 
         }
-
     }
+
+    @Override
+    public Stocks displayLeaderboard(Stocks stocks) {
+        // Once the timer hits "0" (i.e. the "end date and time" has arrived)
+        // and a 'Game' has ended, then we want to call this method to 'displayLeaderboard'
+        Stocks showLeaderboard = new Stocks();
+        String Sql = "SELECT * FROM portfolio_values_vw" +
+                "WHERE game_id = ?" +
+                "ORDER BY portfolio_value DESC;";
+       SqlRowSet leaderboard = jdbcTemplate.queryForRowSet(Sql, stocks.getGameId());
+       while (leaderboard.next()) {
+           showLeaderboard = mapRowToStocks(leaderboard);
+       }
+       return showLeaderboard;
+    }
+    
+
+
         private Stocks mapRowToStocks (SqlRowSet rs){
             Stocks stocks = new Stocks();
             stocks.setUsername(rs.getString("username"));
@@ -101,8 +118,7 @@ public class JdbcStocksDao implements StocksDao {
             stocks.setTransactionId(rs.getInt("transaction_id"));
             stocks.setSharesPerTicker(rs.getInt("shares_per_ticker"));
             stocks.setCompanyName(rs.getString("company_name"));
-
             return stocks;
         }
+        }
 
-}

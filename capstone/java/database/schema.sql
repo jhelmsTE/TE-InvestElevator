@@ -76,7 +76,7 @@ CREATE TABLE stocks (
 ALTER TABLE games 
 		ADD CONSTRAINT FK_games FOREIGN KEY (organizer_id) REFERENCES users(username);
 
-DROP VIEW portfolio_values_vw, user_shares_vw, stock_prices_vw;
+DROP VIEW IF EXISTS portfolio_values_vw, user_shares_vw, stock_prices_vw;
 -- 
 CREATE OR REPLACE VIEW stock_prices_vw AS
 SELECT ticker, stock_price, game_id FROM stocks s
@@ -93,7 +93,8 @@ GROUP BY game_id, username, ticker;
 
 --
 CREATE OR REPLACE VIEW portfolio_values_vw AS
-SELECT username, u.game_id, SUM(stock_price * shares_owned) AS portfolio_value 
+SELECT username, u.game_id, SUM(stock_price * shares_owned)
+AS portfolio_value
 FROM user_shares_vw u LEFT JOIN
 stock_prices_vw s ON u.game_id = s.game_id AND u.ticker = s.ticker
 GROUP BY username, u.game_id;
