@@ -29,15 +29,7 @@ public class StocksController {
 
     }
 
-    @RequestMapping(value = "/buy/{ticker}", method = RequestMethod.POST)
-public void buyStock(@PathVariable String ticker) throws StockTickerNotFoundException {
 
-    }
-
-    @RequestMapping(value = "/sell/{ticker}", method = RequestMethod.PUT)
-    public void sellStock(@PathVariable String ticker) throws StockTickerNotFoundException {
-
-    }
 
     @RequestMapping(value = "/obj", method = RequestMethod.POST)
     public void createStocksObject(@RequestBody Stocks stocks){

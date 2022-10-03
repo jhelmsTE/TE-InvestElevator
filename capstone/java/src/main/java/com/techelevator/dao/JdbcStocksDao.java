@@ -1,6 +1,8 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.GameResult;
+import com.techelevator.model.InsufficientFundsException;
+import com.techelevator.model.InsufficientSharesException;
 import com.techelevator.model.Stocks;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -56,20 +58,33 @@ public class JdbcStocksDao implements StocksDao {
     @Override
     @Transactional
     public void createNewStockTransaction(Stocks stocks) {
-        BigDecimal cash = ( stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold())) ).subtract(
-                stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased())) );
+        BigDecimal cash = (stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold()))).subtract(
+                stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased())));
+        String Sql =  "SELECT shares_owned from user_shares_vw WHERE " +
+        "game_id = ? AND username = ? AND ticker = ?;";
+        Integer userShareCheck = jdbcTemplate.queryForObject(Sql,Integer.class,
+                stocks.getGameId(), stocks.getUsername(), stocks.getTicker());
 
-        String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
-                "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);" +
-                "UPDATE game_results SET cash_to_trade = " +
-                "cash_to_trade + ?, account_value = account_value - ? WHERE game_id = ? AND user_id = " +
-                "(SELECT user_id FROM users WHERE username = ?); COMMIT";
-        jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
-                stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
-                stocks.getSharesSold(), stocks.getSharesPerTicker(),
-                stocks.getCompanyName(), cash, cash, stocks.getUsername());
-
+        if (stocks.getSharesSold() > userShareCheck) {
+        throw new InsufficientSharesException();
+        }
+        Sql = "SELECT cash_to_trade from game_results WHERE " +
+        "game_id = ? AND username = ?;";
+        BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
+        if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo( userCashCheck) > 0) {
+        throw new InsufficientFundsException();
+        } else {
+            String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
+                    "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);" +
+                    "UPDATE game_results SET cash_to_trade = " +
+                    "cash_to_trade + ?, account_value = account_value - ? WHERE game_id = ? AND user_id = " +
+                    "(SELECT user_id FROM users WHERE username = ?); COMMIT";
+            jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
+                    stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
+                    stocks.getSharesSold(), stocks.getSharesPerTicker(),
+                    stocks.getCompanyName(), cash, cash, stocks.getUsername());
+        }
     }
 
 
