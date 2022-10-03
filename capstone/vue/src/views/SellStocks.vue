@@ -3,8 +3,8 @@
     <router-link class="return" :to="{ name: 'game-details' }">Back to Game Details</router-link>
     <h1>Sell Stocks Here!</h1>
     <div class="sellStocks">
-      <p>Select stock you wish to sell: {{ selectedCompany }}</p>
-      <select v-model="selectedCompany">
+      <p>Select stock you wish to sell: {{ stocks.ticker }}</p>
+      <select v-model="stocks.ticker">
         <option value="" disabled selected hidden>Select a company</option>
         <option value="AAPL">Apple</option>
         <option value="MSFT">Microsoft</option>
@@ -47,13 +47,15 @@
         <p>
         <label for="quantity">How many shares would you like to sell? (Whole numbers only; no fractional shares allowed)</label>
         </p>
-        <input type="number" id="quantity" name="quantity" min="1" max="999999999" placeholder="Insert number" />
+        <input type="number" id="quantity" name="quantity" min="1" max="999999999" placeholder="Insert number" 
+          v-model="stocks.sharesSold"/>
       </div>
     </div>
     <div class="buttonContainer">
       <div>
-        <router-link class="button" :to="{ name: 'game-details' }">Confirm</router-link>
-      </div>
+    <button class="button" v-on:click="sellStocks()"  
+          >Confirm</button>      
+          </div>
       <div>
         <router-link class="button" :to="{ name: 'game-details' }">Cancel Transaction</router-link>
       </div>
@@ -62,34 +64,38 @@
 </template>
 
 <script>
+import gameService from "../services/GameService"
+
 export default {
   data() {
     return {
       number: "",
       selectedStock: "",
       selectedCompany: "",
-      stocks: [
-        // { id: 1, name: "Apple" },
-        // { id: 2, name: "Amazon" },
-        // { id: 3, name: "Meta" },
-        // { id: 4, name: "Google" },
-      ],
+      stocks: {
+        username: "",
+        gameId: "",
+        ticker: "",
+        stockPrice: "",
+        sharesPurchased: 0,
+        sharesPerTicker: "",
+        companyName: "",
+        sharesSold: ""
+      },
       search: "",
     };
   },
-  computed: {
-    //Only needed for search bar, not dropdown
-    // filteredStocks() {
-    //   return this.stocks.filter((response) => {
-    //     // return true if the product should be visible
-    //     // in this example we just check if the search string
-    //     // is a substring of the product name (case insensitive)
-    //     return (
-    //       response.name.toLowerCase().indexOf(this.search.toLowerCase()) != -1
-    //     );
-    //   });
-    // },
-  },
+  methods:{
+    sellStocks(){
+      this.stocks.gameId = this.$store.state.gameDetailId
+      console.log(this.stocks.gameId)
+      this.stocks.username = this.$store.state.user.username
+      console.log(this.stocks.username)
+      gameService.createTransaction(this.stocks)
+      console.log(this.stocks.gameId)
+      // this.$router.push({name: 'game-details', params:{id: this.$store.state.gameDetailId}})
+    }
+  }
 };
 </script>
 

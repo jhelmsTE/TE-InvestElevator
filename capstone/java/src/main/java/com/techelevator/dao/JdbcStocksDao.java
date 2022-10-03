@@ -70,6 +70,8 @@ public class JdbcStocksDao implements StocksDao {
         }
         Sql = "SELECT cash_to_trade from game_results WHERE " +
                 "game_id = ? AND username = ?;";
+
+
         BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
         if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
             throw new InsufficientFundsException();
@@ -78,12 +80,14 @@ public class JdbcStocksDao implements StocksDao {
                     "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?);" +
                     "UPDATE game_results SET cash_to_trade = " +
-                    "cash_to_trade + ?, total_account_value = total_account_value - ? WHERE game_id = ? AND user_id = " +
+                    "cash_to_trade + ?, total_account_value = total_account_value - ? WHERE game_id = ? " +
+                    "AND user_id =  " +
                     "(SELECT user_id FROM users WHERE username = ?); COMMIT";
             jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
                     stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
                     stocks.getSharesSold(), stocks.getSharesPerTicker(),
                     stocks.getCompanyName(), cash, cash, stocks.getGameId(), stocks.getUsername());
+
         }
     }
 
@@ -101,21 +105,21 @@ public class JdbcStocksDao implements StocksDao {
        }
        return showLeaderboard;
     }
+    
 
 
-    private Stocks mapRowToStocks(SqlRowSet rs) {
-        Stocks stocks = new Stocks();
-        stocks.setUsername(rs.getString("username"));
-        stocks.setGameId(rs.getInt("game_id"));
-        stocks.setTicker(rs.getString("ticker"));
-        stocks.setStockPrice(rs.getBigDecimal("stock_price"));
-        stocks.setSharesPurchased(rs.getInt("shares_purchased"));
-        stocks.setSharesSold(rs.getInt("shares_sold"));
-        stocks.setTransactionId(rs.getInt("transaction_id"));
-        stocks.setSharesPerTicker(rs.getInt("shares_per_ticker"));
-        stocks.setCompanyName(rs.getString("company_name"));
+        private Stocks mapRowToStocks (SqlRowSet rs){
+            Stocks stocks = new Stocks();
+            stocks.setUsername(rs.getString("username"));
+            stocks.setGameId(rs.getInt("game_id"));
+            stocks.setTicker(rs.getString("ticker"));
+            stocks.setStockPrice(rs.getBigDecimal("stock_price"));
+            stocks.setSharesPurchased(rs.getInt("shares_purchased"));
+            stocks.setSharesSold(rs.getInt("shares_sold"));
+            stocks.setTransactionId(rs.getInt("transaction_id"));
+            stocks.setSharesPerTicker(rs.getInt("shares_per_ticker"));
+            stocks.setCompanyName(rs.getString("company_name"));
+            return stocks;
+        }
+        }
 
-        return stocks;
-    }
-
-}
