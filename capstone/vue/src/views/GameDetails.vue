@@ -24,7 +24,7 @@
       <div class="flex-child balanceAndStocks">
         <div v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
           <p v-show="gameResult.userName === $store.state.user.username">
-            My Current Balance: {{ gameResult.cashToTrade }}
+            My Current Balance: {{gameResult.cashToTrade}}
           </p>
         </div>
         <p class="stocksOwned">Stocks Owned</p>
@@ -80,7 +80,9 @@ export default {
       this.users = response.data;
     });
     gameService.getGameDetails(this.$route.params.id).then((response) => {
-      this.game = response.data;
+      this.game = response.data,
+      this.$store.commit("SET_GAME_DETAIL_ID", this.$route.params.id)
+
     });
     gameService
       .getGameResultsDetails(this.$route.params.id)

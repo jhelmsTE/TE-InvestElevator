@@ -30,7 +30,8 @@ public class JdbcGameResultDao implements GameResultDao {
     @Override
     public List<GameResult> findGameResultById(int id) {
         List<GameResult> gameResultsList = new ArrayList<>();
-        String sql = "SELECT * FROM game_results WHERE game_id = ?;";
+        String sql = "SELECT user_id, game_id, username, game_name, cash_to_trade, total_account_value" +
+                " FROM game_results WHERE game_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         while(results.next()) {
             GameResult gameResult = mapRowToGameResult(results);
@@ -71,7 +72,7 @@ public class JdbcGameResultDao implements GameResultDao {
         gameResult.setGameName(rs.getString("game_name"));
         gameResult.setUserName(rs.getString("username"));
         gameResult.setCashToTrade(rs.getBigDecimal("cash_to_trade"));
-        gameResult.setCashToTrade(rs.getBigDecimal("total_account_value"));
+        gameResult.setTotalAccountValue(rs.getBigDecimal("total_account_value"));
         return gameResult;
     }
 }

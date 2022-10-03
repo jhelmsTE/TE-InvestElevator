@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
-@PreAuthorize("isAuthenticated()")
-@RequestMapping("/stocks")
+//@PreAuthorize("isAuthenticated()")
+//@RequestMapping("/stocks")
 public class StocksController {
 
     private UserDao userDao;
@@ -31,9 +31,9 @@ public class StocksController {
 
 
 
-    @RequestMapping(value = "/obj", method = RequestMethod.POST)
+    @RequestMapping(value = "/stocks/obj", method = RequestMethod.POST)
     public void createStocksObject(@RequestBody Stocks stocks){
-       StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
+        StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
         stocks.setStockPrice(stocksInfo.getStockPriceInfoFromAPI().getStockPrice());
         stocksDao.createNewStockTransaction(stocks);
     }

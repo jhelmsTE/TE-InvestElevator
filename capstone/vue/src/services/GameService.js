@@ -25,6 +25,10 @@ export default {
 
     updateGame(id) {
         return axios.put(`/viewGame/${id}`)
-    }
+    },
 
+    createTransaction(stocks) {
+        return axios.post('/stocks/obj', stocks)
+    }
+       
 }
