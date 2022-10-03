@@ -78,7 +78,7 @@ public class JdbcStocksDao implements StocksDao {
                     "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?);" +
                     "UPDATE game_results SET cash_to_trade = " +
-                    "cash_to_trade + ?, account_value = account_value - ? WHERE game_id = ? AND user_id = " +
+                    "cash_to_trade + ?, total_account_value = total_account_value - ? WHERE game_id = ? AND user_id = " +
                     "(SELECT user_id FROM users WHERE username = ?); COMMIT";
             jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
                     stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
@@ -88,14 +88,14 @@ public class JdbcStocksDao implements StocksDao {
     }
 
     @Override
-    public Stocks displayLeaderboard(Stocks stocks) {
+    public Stocks displayLeaderboard(int gameId) {
         // Once the timer hits "0" (i.e. the "end date and time" has arrived)
         // and a 'Game' has ended, then we want to call this method to 'displayLeaderboard'
         Stocks showLeaderboard = new Stocks();
-        String Sql = "SELECT * FROM portfolio_values_vw" +
-                "WHERE game_id = ?" +
+        String Sql = "SELECT * FROM portfolio_values_vw " +
+                "WHERE game_id = ? " +
                 "ORDER BY portfolio_value DESC;";
-       SqlRowSet leaderboard = jdbcTemplate.queryForRowSet(Sql, stocks.getGameId());
+       SqlRowSet leaderboard = jdbcTemplate.queryForRowSet(Sql, gameId);
        while (leaderboard.next()) {
            showLeaderboard = mapRowToStocks(leaderboard);
        }
