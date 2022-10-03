@@ -1,28 +1,47 @@
 <template>
   <div>
-    <router-link class="backToGames" :to="{name: 'viewAllGames'}">Back to View All Games</router-link>
+    <router-link class="backToGames" :to="{ name: 'viewAllGames' }"
+      >Back to View All Games</router-link
+    >
     <div class="joinGame">
-      To join this game, click the "Join Game" button here: 
-    <div v-for="user in users" v-bind:key="user.id">
-    <button v-on:click='addUser(user.id, user.username)' v-show="user.username === $store.state.user.username">Join Game</button>
-    </div>
+      To join this game, click the "Join Game" button here:
+      <div v-for="user in users" v-bind:key="user.id">
+        <button
+          v-on:click="addUser(user.id, user.username)"
+          v-show="user.username === $store.state.user.username"
+        >
+          Join Game
+        </button>
+      </div>
     </div>
     <h1>Game Name: {{ game.gameName }}</h1>
     <div class="gameIntro">
-    <h2 class="organizer">Organizer: {{ game.username }}</h2>
-    <h4>Game Start: {{game.startDate}}</h4>
-    <h4>Game End: {{game.endDate}}</h4>
+      <h2 class="organizer">Organizer: {{ game.username }}</h2>
+      <h4>Game Start: {{ game.startDate }}</h4>
+      <h4>Game End: {{ game.endDate }}</h4>
     </div>
     <div class="flex-container">
       <div class="flex-child balanceAndStocks">
-        <p>My Current Balance:</p>
+        <div v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
+          <p v-show="gameResult.userName === $store.state.user.username">
+            My Current Balance: {{ gameResult.cashToTrade }}
+          </p>
+        </div>
         <p class="stocksOwned">Stocks Owned</p>
-        <router-link class="stockButton" :to="{name: 'buyStocks'}">Buy Stocks</router-link>
-        <router-link class="stockButton" :to="{name: 'sellStocks'}">Sell Stocks</router-link>
+        <router-link class="stockButton" :to="{ name: 'buyStocks' }"
+          >Buy Stocks</router-link
+        >
+        <router-link class="stockButton" :to="{ name: 'sellStocks' }"
+          >Sell Stocks</router-link
+        >
       </div>
-      <div class="flex-child participantsAndBalances">
+      <div class="flex-child">
         <p>Game Participants and Current Balances</p>
-        <p v-for="user in users" v-bind:key="user.id">{{user.username}}</p>
+        <div class="participants">
+          <p v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
+            {{ gameResult.userName }} {{ gameResult.cashToTrade }}
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -37,6 +56,7 @@ export default {
     return {
       selectedGameResultUsers: [],
       users: [],
+      gameResults: [],
       user: {
         id: "",
         username: "",
@@ -48,11 +68,11 @@ export default {
         gameName: "",
         gameResult: "",
       },
-      gameResults : {
+      gameResult: {
         userId: "",
+        userName: "",
         gameName: "",
-        userName: ""
-      }
+      },
     };
   },
   created() {
@@ -62,22 +82,35 @@ export default {
     gameService.getGameDetails(this.$route.params.id).then((response) => {
       this.game = response.data;
     });
+    gameService
+      .getGameResultsDetails(this.$route.params.id)
+      .then((response) => {
+        this.gameResults = response.data;
+      });
   },
   methods: {
     addUser(id, username){
-      this.gameResults.userId = id;
-      this.gameResults.userName = username;
-      this.gameResults.gameName = this.game.gameName;
-      this.selectedGameResultUsers.push(this.gameResults)
-      this.gameResults = { userId: "", gameName: "", userName: ""}
-      gameService.createGameResult(this.selectedGameResultUsers);
+      this.gameResult.userId = id;
+      this.gameResult.userName = username;
+      this.gameResult.gameName = this.game.gameName;
+      this.selectedGameResultUsers.push(this.gameResult)
+      // this.gameResults = { userId: "", gameName: "", userName: ""}
+      gameService.createGameResult(this.selectedGameResultUsers).then(gameService.getGameResultsDetails(this.$route.params.id)
+      .then((response) => {
+        this.gameResults = response.data;
+      }));
       }
   },
+  computed: {
+    currentGameResults() {
+      return this.gameResults;
+    }
+  }
 };
 </script>
 
 <style>
-.gameIntro{
+.gameIntro {
   display: flex;
   flex-direction: column;
   padding-left: 15%;
@@ -86,55 +119,58 @@ export default {
 }
 .flex-container {
   display: flex;
-  width:80%;
-  padding-left:10%;
-  padding-right:10%;
+  width: 80%;
+  padding-left: 10%;
+  padding-right: 10%;
 }
 .flex-child {
+  padding-left: 10px;
+  padding-bottom: 10px;
   flex: 1;
   border: 2px solid white;
 }
 .flex-child:first-child {
   margin-right: 20px;
 }
-.balanceAndStocks{
+.balanceAndStocks {
   padding-left: 10px;
   font-weight: bold;
 }
-.participantsAndBalances{
-  padding-left: 10px;
+.participants {
+  display: flex;
+  flex-direction: column;
   font-weight: bold;
 }
-.stocksOwned{
+.stocksOwned {
   text-decoration: underline;
 }
-.backToGames{
+.backToGames {
   font-weight: bold;
   margin-left: 10px;
 }
 .stockButton {
-  background-color:#44c767;
-	border-radius:28px;
-	border:1px solid #18ab29;
-	display:inline-block;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:15px;
-	padding:16px 31px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #2f6627;
+  background-color: #44c767;
+  border-radius: 28px;
+  border: 1px solid #18ab29;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 15px;
+  padding: 15px 31px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #2f6627;
+  margin-top: 60px;
   margin-right: 10px;
-  margin-bottom: 20px;
 }
 .stockButton:hover {
-	background-color:#5cbf2a;
+  background-color: #5cbf2a;
 }
 .stockButton:active {
-	position:relative;
-	top:1px;
+  position: relative;
+  top: 1px;
 }
-.joinGame{
+.joinGame {
   display: flex;
   justify-content: center;
   align-items: center;

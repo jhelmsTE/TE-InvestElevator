@@ -37,7 +37,7 @@ public class GameController {
     }
 
     @RequestMapping(value ="/createGameResult", method = RequestMethod.POST)
-    public void create(@Valid @RequestBody GameResult[] newGameResult){
+    public void create(@RequestBody GameResult[] newGameResult){
         gameResultDao.createGameResult(newGameResult);
     }
 
@@ -49,6 +49,11 @@ public class GameController {
     @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.PUT)
     public void update(@PathVariable int id, @Valid @RequestBody Game updateGame){
         gameDao.updateGame(id, updateGame.getStartDate(), updateGame.getEndDate(), updateGame.getGameName());
+    }
+
+    @RequestMapping(path = "/viewGameResults/{id}", method = RequestMethod.GET)
+    public List<GameResult> getGameResults(@PathVariable int id) throws GameNotFoundException {
+        return gameResultDao.findGameResultById(id);
     }
 
     }
