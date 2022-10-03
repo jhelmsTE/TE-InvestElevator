@@ -43,7 +43,7 @@ public void buyStock(@PathVariable String ticker) throws StockTickerNotFoundExce
     public void createStocksObject(@RequestBody Stocks stocks){
        StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
         stocks.setStockPrice(stocksInfo.getStockPriceInfoFromAPI().getStockPrice());
-        stocksDao.CreateNewStockTransaction(stocks);
+        stocksDao.createNewStockTransaction(stocks);
     }
 
     

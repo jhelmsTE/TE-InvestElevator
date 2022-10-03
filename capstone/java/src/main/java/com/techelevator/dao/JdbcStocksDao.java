@@ -1,30 +1,39 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.GameResult;
 import com.techelevator.model.Stocks;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class JdbcStocksDao implements StocksDao {
     private final JdbcTemplate jdbcTemplate;
-    public JdbcStocksDao(JdbcTemplate jdbcTemplate) {this.jdbcTemplate = jdbcTemplate;}
+
+    public JdbcStocksDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    private GameResult gameResult;
+
 
     @Override
-    public List<Stocks> showUserStocksByGame(String username, int gameId){
-     List<Stocks> stocksList = new ArrayList<>();
-     String sql = "SELECT ticker FROM stocks WHERE game_id = ?;";
+    public List<Stocks> showUserStocksByGame(String username, int gameId) {
+        List<Stocks> stocksList = new ArrayList<>();
+        String sql = "SELECT ticker FROM stocks WHERE game_id = ?;";
 
-     SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-     while (results.next()) {
-         Stocks stocks = mapRowToStocks(results);
-         stocksList.add(stocks);
-     }
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+        while (results.next()) {
+            Stocks stocks = mapRowToStocks(results);
+            stocksList.add(stocks);
+        }
 
-     return stocksList;
+        return stocksList;
 
     }
 
@@ -43,27 +52,25 @@ public class JdbcStocksDao implements StocksDao {
         return stocks;
     }
 
-//    @Override
-//   public Stocks sellStockByTicker(String username, int gameId, String ticker) {
-//    Stocks stocks = new Stocks();
-//        String deleteStock = "DELETE FROM stocks (username, game_id, ticker, company_name, buy_price) " +
-//                "VALUES (?, ?, ? (SELECT company_name FROM stocks where ticker = ?), " +
-//                "(SELECT buy_price FROM stocks WHERE ticker = ?));";
-//
-//        return stocks;
-//}
 
     @Override
-    public void CreateNewStockTransaction(Stocks stocks) {
-        String createStock = "INSERT INTO stocks (username, game_id, ticker, stock_price, " +
+    @Transactional
+    public void createNewStockTransaction(Stocks stocks) {
+        BigDecimal cash = ( stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold())) ).subtract(
+                stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased())) );
+
+        String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
                 "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?);" +
+                "UPDATE game_results SET cash_to_trade = " +
+                "cash_to_trade + ?, account_value = account_value - ? WHERE game_id = ? AND user_id = " +
+                "(SELECT user_id FROM users WHERE username = ?); COMMIT";
         jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
                 stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
                 stocks.getSharesSold(), stocks.getSharesPerTicker(),
-                stocks.getCompanyName());
-    }
+                stocks.getCompanyName(), cash, cash, stocks.getUsername());
 
+    }
 
 
     private Stocks mapRowToStocks(SqlRowSet rs) {
