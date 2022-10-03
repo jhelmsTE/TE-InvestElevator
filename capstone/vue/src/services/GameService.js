@@ -10,6 +10,10 @@ export default {
         return axios.get(`/viewGame/${id}`)
     },
 
+    getGameResultsDetails(id) {
+        return axios.get(`/viewGameResults/${id}`)
+    },
+
     create(game) {
             console.log(game)
             return axios.post('/createGame', game)

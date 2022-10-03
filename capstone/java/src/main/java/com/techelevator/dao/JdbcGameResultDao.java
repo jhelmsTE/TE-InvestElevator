@@ -1,11 +1,15 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.GameNotFoundException;
 import com.techelevator.model.GameResult;
+import com.techelevator.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class JdbcGameResultDao implements GameResultDao {
@@ -21,6 +25,18 @@ public class JdbcGameResultDao implements GameResultDao {
            id = gameId.getInt("game_id");
        }
        return id;
+    }
+
+    @Override
+    public List<GameResult> findGameResultById(int id) {
+        List<GameResult> gameResultsList = new ArrayList<>();
+        String sql = "SELECT * FROM game_results WHERE game_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        while(results.next()) {
+            GameResult gameResult = mapRowToGameResult(results);
+            gameResultsList.add(gameResult);
+        }
+        return gameResultsList;
     }
 
     @Override
