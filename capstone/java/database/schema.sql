@@ -65,7 +65,7 @@ CREATE TABLE stocks (
 	stock_price decimal,
 	shares_purchased int,
 	shares_sold int,
-	transaction_id int NOT NULL DEFAULT nextval('seq_transaction_id'),
+	transaction_id int PRIMARY KEY DEFAULT nextval('seq_transaction_id'),
 	shares_per_ticker int,
 	company_name varchar(50),
 	--CONSTRAINT PK_stocks PRIMARY KEY (user_id),
@@ -75,5 +75,27 @@ CREATE TABLE stocks (
 
 ALTER TABLE games 
 		ADD CONSTRAINT FK_games FOREIGN KEY (organizer_id) REFERENCES users(username);
+
+DROP VIEW portfolio_values_vw, user_shares_vw, stock_prices_vw;
+-- 
+CREATE OR REPLACE VIEW stock_prices_vw AS
+SELECT ticker, stock_price, game_id FROM stocks s
+WHERE transaction_id =
+(SELECT MAX(transaction_id) 
+ FROM stocks sq WHERE sq.game_id = s.game_id AND sq.ticker = s.ticker);
+ 
+--
+CREATE OR REPLACE VIEW user_shares_vw AS
+SELECT game_id, username, ticker,
+SUM(shares_purchased) - SUM(shares_sold) AS shares_owned
+FROM stocks
+GROUP BY game_id, username, ticker;
+
+--
+CREATE OR REPLACE VIEW portfolio_values_vw AS
+SELECT username, u.game_id, SUM(stock_price * shares_owned) AS portfolio_value 
+FROM user_shares_vw u LEFT JOIN
+stock_prices_vw s ON u.game_id = s.game_id AND u.ticker = s.ticker
+GROUP BY username, u.game_id;
 
 COMMIT TRANSACTION;
