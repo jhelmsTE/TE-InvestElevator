@@ -10,6 +10,7 @@ import com.techelevator.model.UserShares;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 
@@ -48,8 +49,8 @@ public List<Leaderboard> getLeaderboardByGameId(@PathVariable int gameId) {
 
 
     @RequestMapping(path= "/stocks/{id}", method = RequestMethod.GET)
-    public List<UserShares> listOfStocks(@PathVariable int id, @RequestParam String username){
-        return stocksDao.displayShares(id, username);
+    public List<UserShares> listOfStocks(@PathVariable int id, Principal principal){
+        return stocksDao.displayShares(id, principal.getName());
     }
 
     

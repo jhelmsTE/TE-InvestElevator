@@ -31,8 +31,8 @@ export default {
         return axios.post('/stocks/obj', stocks)
     },
 
-    showUserStock(id, {userName}) {
-        return axios.get(`/stocks/${id}`, {userName})
+    showUserStock(id) {
+        return axios.get(`/stocks/${id}`)
     }
        
 }

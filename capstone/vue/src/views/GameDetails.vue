@@ -93,7 +93,7 @@ export default {
       .then((response) => {
         this.gameResults = response.data;
       });
-     gameService.showUserStock(this.$route.params.id, this.$store.state.user).then((response) =>{this.userStocks = response.data} ) 
+     gameService.showUserStock(this.$route.params.id).then((response) =>{this.userStocks = response.data} ) 
   },
   methods: {
     addUser(id, username){
