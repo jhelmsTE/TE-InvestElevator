@@ -71,8 +71,6 @@ export default {
       
     },
     addUser(id, username){
-      console.log(id)
-      console.log(username)
       this.gameResults.userId = id;
       this.gameResults.userName = username;
       this.gameResults.gameName = this.game.gameName;
@@ -80,7 +78,6 @@ export default {
       this.gameResults = { userId: "",
         gameName: "",
         userName: ""}
-      console.log(this.selectedGameResultUsers.length)
       }
      }
 }

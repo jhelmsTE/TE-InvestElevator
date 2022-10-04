@@ -8,7 +8,7 @@ public class GameResult {
         private String gameName;
         private String userName;
         private BigDecimal cashToTrade = new BigDecimal(100000);
-        private BigDecimal totalAccountValue = new BigDecimal(100000);
+        private BigDecimal totalAccountValue = new BigDecimal(0);
 
         public GameResult(){
         }

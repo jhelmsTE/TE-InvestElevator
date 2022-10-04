@@ -45,8 +45,6 @@ public class JdbcGameResultDao implements GameResultDao {
 
         for (GameResult eachGameResult : gameResults) {
 
-            // call a method that finds gameId by gameName (eachGameResult.getGameName)
-
             String name = eachGameResult.getGameName();
             int gameId =  findIdByGameName(name);// result from method
             eachGameResult.setGameId(gameId);
