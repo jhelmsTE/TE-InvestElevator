@@ -9,6 +9,7 @@ import com.techelevator.model.GameResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 
@@ -54,6 +55,18 @@ public class GameController {
     @RequestMapping(path = "/viewGameResults/{id}", method = RequestMethod.GET)
     public List<GameResult> getGameResults(@PathVariable int id) throws GameNotFoundException {
         return gameResultDao.findGameResultById(id);
+    }
+
+    //findGameResultByUsername
+    @RequestMapping(path = "/viewGameResultsByUsername", method = RequestMethod.GET)
+    public List<GameResult> getGameResultsByUsername(Principal principal) throws GameNotFoundException {
+        return gameResultDao.findGameResultByCurrentUser(principal.getName());
+    }
+
+    //findGameResultByNotCurrentUser
+    @RequestMapping(path = "/viewGameResultsByNotCurrentUser", method = RequestMethod.GET)
+    public List<GameResult> getGameResultsByNotCurrentUser(Principal principal) throws GameNotFoundException {
+        return gameResultDao.findGameResultByNotCurrentUser(principal.getName());
     }
 
     }

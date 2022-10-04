@@ -9,7 +9,7 @@
       <router-link
         :to="{ name: 'game-details', params: { id: game.id } }"
         class="card"
-        v-for="game in filteredGames"
+        v-for="game in filteredGamesForSearchBar"
         v-bind:key="game.id"
       >
         <h4>{{ game.gameName }}</h4>
@@ -26,8 +26,19 @@ export default {
     return {
       selectedGame: "",
       games: [],
+      gameResults: [],
       game: {
+        id: "",
         name: "",
+      },
+      user: {
+        id: "",
+        username: "",
+      },
+      gameResult: {
+        userId: "",
+        userName: "",
+        gameName: "",
       },
     };
   },
@@ -35,10 +46,14 @@ export default {
     gameService.getAllGames().then((response) => {
       this.games = response.data;
     });
+    gameService.getGameResultsDetailsByUsername()
+    .then((response) => {
+      this.gameResults = response.data;
+    });
   },
   computed: {
-    filteredGames() {
-      return this.games.filter((game) => {
+    filteredGamesForSearchBar() {
+      return this.gameResults.filter((game) => {
         return (
           game.gameName
             .toLowerCase()

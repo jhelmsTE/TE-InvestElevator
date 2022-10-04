@@ -11,4 +11,8 @@ public interface GameResultDao {
      int findIdByGameName(String gameName);
 
      List<GameResult> findGameResultById(int id);
+
+     List<GameResult> findGameResultByCurrentUser(String userName);
+
+     List<GameResult> findGameResultByNotCurrentUser(String userName);
 }
