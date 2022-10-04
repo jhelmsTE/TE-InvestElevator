@@ -5,8 +5,11 @@ import com.techelevator.model.Stocks;
 import com.techelevator.dao.*;
 import com.techelevator.model.StockTickerNotFoundException;
 import com.techelevator.model.StocksInfo;
+import com.techelevator.model.UserShares;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -39,6 +42,16 @@ public Stocks getLeaderboardByGameId(@PathVariable ("gameId") Integer gameId) {
         StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
         stocks.setStockPrice(stocksInfo.getStockPriceInfoFromAPI().getStockPrice());
         stocksDao.createNewStockTransaction(stocks);
+    }
+
+//    @RequestMapping(path= "/stocks/{id}", method = RequestMethod.GET)
+//    public List<Stocks> listOfStocks(@PathVariable int id){
+//        return stocksDao.showUserStocksByGame(id);
+//    }
+
+    @RequestMapping(path= "/stocks/{id}", method = RequestMethod.GET)
+    public List<UserShares> listOfStocks(@PathVariable int id){
+        return stocksDao.displayShares(id);
     }
 
     

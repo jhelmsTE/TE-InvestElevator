@@ -29,6 +29,10 @@ export default {
 
     createTransaction(stocks) {
         return axios.post('/stocks/obj', stocks)
+    },
+
+    showUserStock(id) {
+        return axios.get(`/stocks/${id}`)
     }
        
 }

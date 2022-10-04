@@ -28,6 +28,9 @@
           </p>
         </div>
         <p class="stocksOwned">Stocks Owned</p>
+        <div v-for="stock in userStocks" v-bind:key="stock.id" >
+          {{stock.ticker}} {{stock.sharesOwned}}
+        </div> 
         <router-link class="stockButton" :to="{ name: 'buyStocks' }"
           >Buy Stocks</router-link
         >
@@ -57,6 +60,7 @@ export default {
       selectedGameResultUsers: [],
       users: [],
       gameResults: [],
+      userStocks: [],
       user: {
         id: "",
         username: "",
@@ -89,6 +93,7 @@ export default {
       .then((response) => {
         this.gameResults = response.data;
       });
+     gameService.showUserStock(this.$route.params.id).then((response) =>{this.userStocks = response.data} ) 
   },
   methods: {
     addUser(id, username){
@@ -96,7 +101,7 @@ export default {
       this.gameResult.userName = username;
       this.gameResult.gameName = this.game.gameName;
       this.selectedGameResultUsers.push(this.gameResult)
-      // this.gameResults = { userId: "", gameName: "", userName: ""}
+      this.gameResults = { userId: "", gameName: "", userName: ""}
       gameService.createGameResult(this.selectedGameResultUsers).then(gameService.getGameResultsDetails(this.$route.params.id)
       .then((response) => {
         this.gameResults = response.data;
