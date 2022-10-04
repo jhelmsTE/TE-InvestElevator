@@ -42,7 +42,7 @@ CREATE TABLE game_results (
 	username varchar(50) NOT NULL,
 	game_name varchar(50) NOT NULL,
 	cash_to_trade decimal DEFAULT 100000,
-	total_account_value decimal DEFAULT 100000,
+	total_account_value decimal DEFAULT 0,
 	-- spot saved for (realtime / all-time results columns)
 	--is there a way to include list of purchased stocks here, or is that a separate table?
 	CONSTRAINT PK_game_results PRIMARY KEY(user_id, game_id),

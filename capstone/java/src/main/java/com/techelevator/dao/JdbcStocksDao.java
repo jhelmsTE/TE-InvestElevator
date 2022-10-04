@@ -111,6 +111,8 @@ public class JdbcStocksDao implements StocksDao {
     public List<Leaderboard> displayLeaderboard(int gameId) {
         // Once the timer hits "0" (i.e. the "end date and time" has arrived)
         // and a 'Game' has ended, then we want to call this method to 'displayLeaderboard'
+
+
       List<Leaderboard> leaderboard = new ArrayList<>();
         String Sql = "SELECT username, game_id, portfolio_value FROM portfolio_values_vw " +
                 "WHERE game_id = ? " +
@@ -121,6 +123,7 @@ public class JdbcStocksDao implements StocksDao {
            leaderboard.add(mapRowToLeaderboard(results));
        }
        return leaderboard;
+
 
     }
     
