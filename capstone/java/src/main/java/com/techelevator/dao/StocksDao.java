@@ -12,7 +12,7 @@ public interface StocksDao {
 
     Stocks getCompanyNameByTicker(String ticker);
 
-    List<UserShares> displayShares(int id);
+    List<UserShares> displayShares(int id, String username);
 
     void createNewStockTransaction(Stocks stocks);
 

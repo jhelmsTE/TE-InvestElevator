@@ -23,11 +23,11 @@ public class JdbcStocksDao implements StocksDao {
 
 
     @Override
-    public List<UserShares> displayShares(int id) {
+    public List<UserShares> displayShares(int id, String username) {
         List<UserShares> userShares = new ArrayList<>();
         String sql = "SELECT game_id, username, ticker, shares_owned FROM user_shares_vw " +
-                "WHERE game_id = ? ORDER BY ticker; ";
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+                "WHERE game_id = ? AND username = ? ORDER BY ticker; ";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id, username);
         while (results.next()) {
             userShares.add(mapRowToUserShares(results));
         }
@@ -147,11 +147,6 @@ public class JdbcStocksDao implements StocksDao {
         leaderboard.setPortfolioValue(rs.getBigDecimal("portfolio_value"));
         return leaderboard;
     }
-
-
-
-
-
 
 
 

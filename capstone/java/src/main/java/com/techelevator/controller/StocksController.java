@@ -46,14 +46,10 @@ public List<Leaderboard> getLeaderboardByGameId(@PathVariable int gameId) {
         stocksDao.createNewStockTransaction(stocks);
     }
 
-//    @RequestMapping(path= "/stocks/{id}", method = RequestMethod.GET)
-//    public List<Stocks> listOfStocks(@PathVariable int id){
-//        return stocksDao.showUserStocksByGame(id);
-//    }
 
     @RequestMapping(path= "/stocks/{id}", method = RequestMethod.GET)
-    public List<UserShares> listOfStocks(@PathVariable int id){
-        return stocksDao.displayShares(id);
+    public List<UserShares> listOfStocks(@PathVariable int id, @RequestParam String username){
+        return stocksDao.displayShares(id, username);
     }
 
     
