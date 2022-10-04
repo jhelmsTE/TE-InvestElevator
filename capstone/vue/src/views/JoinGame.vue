@@ -5,7 +5,7 @@
     <div class="searchBar">
       <input type="text" v-model="selectedGame" placeholder="Search games..." />
     </div>
-    <div class="all-cards">
+    <div class="all-cards" v-if="gameResults.username === $store.state.username">
       <router-link
         :to="{ name: 'game-details', params: { id: game.id } }"
         class="card"
@@ -46,15 +46,14 @@ export default {
     gameService.getAllGames().then((response) => {
       this.games = response.data;
     });
-    // gameService
-    //   .getGameResultsDetails(this.$route.params.id)
-    //   .then((response) => {
-    //     this.gameResults = response.data;
-    //   });
+    gameService.getGameResultsByNotCurrentUser()
+    .then((response) => {
+      this.gameResults = response.data
+    });
   },
   computed: {
     filteredGamesForSearchBar() {
-      return this.games.filter((game) => {
+      return this.gameResults.filter((game) => {
         return (
           game.gameName
             .toLowerCase()
@@ -62,11 +61,6 @@ export default {
         );
       });
     },
-    // filteredGamesByCurrentUser() {
-    //   return this.gameResults.filter((gameResult) => {
-    //     return (gameResult.username.includes(this.$store.state.username))
-    //   })
-    // }
   },
 };
 </script>

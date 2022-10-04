@@ -65,6 +65,31 @@ public class JdbcGameResultDao implements GameResultDao {
 
     }
 
+    @Override
+    public List<GameResult> findGameResultByCurrentUser(String userName) {
+        List<GameResult> gameResultsListByUser = new ArrayList<>();
+        String sql = "SELECT * FROM game_results WHERE username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userName);
+        while(results.next()) {
+            GameResult gameResult = mapRowToGameResult(results);
+            gameResultsListByUser.add(gameResult);
+        }
+        return gameResultsListByUser;
+    }
+
+    @Override
+    public List<GameResult> findGameResultByNotCurrentUser(String userName) {
+        List<GameResult> gameResultsListByUser = new ArrayList<>();
+        String sql = "SELECT * FROM game_results WHERE game_name NOT IN " +
+                "(SELECT game_name FROM game_results WHERE username = ?);";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userName);
+        while(results.next()) {
+            GameResult gameResult = mapRowToGameResult(results);
+            gameResultsListByUser.add(gameResult);
+        }
+        return gameResultsListByUser;
+    }
+
     private GameResult mapRowToGameResult(SqlRowSet rs){
         GameResult gameResult = new GameResult();
         gameResult.setUserId(rs.getInt("user_id"));

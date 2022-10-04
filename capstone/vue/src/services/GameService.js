@@ -33,6 +33,14 @@ export default {
 
     showUserStock(id) {
         return axios.get(`/stocks/${id}`)
+    },
+
+    getGameResultsDetailsByUsername() {
+        return axios.get('/viewGameResultsByUsername')
+    },
+
+    getGameResultsByNotCurrentUser() {
+        return axios.get('/viewGameResultsByNotCurrentUser')
     }
        
 }
