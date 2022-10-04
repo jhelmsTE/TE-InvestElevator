@@ -5,15 +5,14 @@
     <div class="searchBar">
       <input type="text" v-model="selectedGame" placeholder="Search games..." />
     </div>
-    <div class="all-cards" v-if="gameResults.username === $store.state.username">
-      <router-link
-        :to="{ name: 'game-details', params: { id: game.id } }"
+    <div class="all-cards">
+      <button v-bind:gameId="game.id"
+        v-on:click="goToGameDetails(game.id)"
         class="card"
-        v-for="game in filteredGamesForSearchBar"
-        v-bind:key="game.id"
+        v-for="game in filteredGamesForSearchBar" v-bind:key="game.id"
       >
         <h4>{{ game.gameName }}</h4>
-      </router-link>
+      </button>
     </div>
   </div>
 </template>
@@ -62,6 +61,12 @@ export default {
       });
     },
   },
+  methods: {
+    goToGameDetails(id){
+      console.log(id)
+      this.$router.push({ name: 'game-details', params: { id: id } })
+    }
+  }
 };
 </script>
 
