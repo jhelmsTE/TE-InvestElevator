@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <h1>Home</h1>
-    <div id="welcome">Welcome to the Virtual Stock Market Game!</div>
+    <div id="welcome">Welcome to the InvestElevator!</div>
     <div class="homeItems">
       <div class="user">
         <p>Current User: {{ this.$store.state.user.username }}</p>
