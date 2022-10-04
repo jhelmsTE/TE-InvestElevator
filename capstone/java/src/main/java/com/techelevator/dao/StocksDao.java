@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.Leaderboard;
 import com.techelevator.model.Stocks;
 
 import java.util.List;
@@ -16,6 +17,6 @@ public interface StocksDao {
 
     void createNewStockTransaction(Stocks stocks);
 
-    Stocks displayLeaderboard(int gameId);
+    List<Leaderboard> displayLeaderboard(int gameId);
 
 }

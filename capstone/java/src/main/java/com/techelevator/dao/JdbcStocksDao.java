@@ -1,9 +1,6 @@
 package com.techelevator.dao;
 
-import com.techelevator.model.GameResult;
-import com.techelevator.model.InsufficientFundsException;
-import com.techelevator.model.InsufficientSharesException;
-import com.techelevator.model.Stocks;
+import com.techelevator.model.*;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -22,6 +19,7 @@ public class JdbcStocksDao implements StocksDao {
     }
 
     private GameResult gameResult;
+    private Leaderboard leaderboard;
 
 
     @Override
@@ -92,18 +90,19 @@ public class JdbcStocksDao implements StocksDao {
     }
 
     @Override
-    public Stocks displayLeaderboard(int gameId) {
+    public List<Leaderboard> displayLeaderboard(int gameId) {
         // Once the timer hits "0" (i.e. the "end date and time" has arrived)
         // and a 'Game' has ended, then we want to call this method to 'displayLeaderboard'
-        Stocks showLeaderboard = new Stocks();
-        String Sql = "SELECT * FROM portfolio_values_vw " +
+      List<Leaderboard> leaderboard = new ArrayList<>();
+        String Sql = "SELECT username, game_id, portfolio_value FROM portfolio_values_vw " +
                 "WHERE game_id = ? " +
                 "ORDER BY portfolio_value DESC;";
-       SqlRowSet leaderboard = jdbcTemplate.queryForRowSet(Sql, gameId);
-       while (leaderboard.next()) {
-           showLeaderboard = mapRowToStocks(leaderboard);
+       SqlRowSet results = jdbcTemplate.queryForRowSet(Sql, gameId);
+       while (results.next()) {
+           leaderboard.add(mapRowToLeaderboard(results));
        }
-       return showLeaderboard;
+       return leaderboard;
+
     }
     
 
@@ -121,5 +120,15 @@ public class JdbcStocksDao implements StocksDao {
             stocks.setCompanyName(rs.getString("company_name"));
             return stocks;
         }
+
+    private Leaderboard mapRowToLeaderboard(SqlRowSet rs) {
+        Leaderboard leaderboard = new Leaderboard();
+        leaderboard.setUsername(rs.getString("username"));
+        leaderboard.setGameId(rs.getInt("game_id"));
+        leaderboard.setPortfolioValue(rs.getBigDecimal("portfolio_value"));
+        return leaderboard;
+    }
+
+
         }
 
