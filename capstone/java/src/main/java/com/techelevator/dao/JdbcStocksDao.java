@@ -23,11 +23,25 @@ public class JdbcStocksDao implements StocksDao {
 
 
     @Override
-    public List<Stocks> showUserStocksByGame(String username, int gameId) {
-        List<Stocks> stocksList = new ArrayList<>();
-        String sql = "SELECT ticker FROM stocks WHERE game_id = ?;";
+    public List<UserShares> displayShares(int id) {
+        List<UserShares> userShares = new ArrayList<>();
+        String sql = "SELECT game_id, username, ticker, shares_owned FROM user_shares_vw " +
+                "WHERE game_id = ? ORDER BY ticker; ";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+        while (results.next()) {
+            userShares.add(mapRowToUserShares(results));
+        }
+        return userShares;
+    }
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+
+    @Override
+    public List<Stocks> showUserStocksByGame(int id) {
+        List<Stocks> stocksList = new ArrayList<>();
+        String sql = "SELECT username, game_id, ticker, stock_price, shares_purchased " +
+                ", shares_sold, transaction_id, shares_per_ticker, company_name FROM stocks WHERE game_id = ?; ";
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         while (results.next()) {
             Stocks stocks = mapRowToStocks(results);
             stocksList.add(stocks);
@@ -58,33 +72,37 @@ public class JdbcStocksDao implements StocksDao {
     public void createNewStockTransaction(Stocks stocks) {
         BigDecimal cash = (stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold()))).subtract(
                 stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased())));
-        String Sql = "SELECT shares_owned from user_shares_vw WHERE " +
+        String Sql = "SELECT SUM(shares_owned) from user_shares_vw WHERE " +
                 "game_id = ? AND username = ? AND ticker = ?;";
         Integer userShareCheck = jdbcTemplate.queryForObject(Sql, Integer.class,
                 stocks.getGameId(), stocks.getUsername(), stocks.getTicker());
-
+        if (userShareCheck == null) {
+            userShareCheck = 0;
+        }
         if (stocks.getSharesSold() > userShareCheck) {
             throw new InsufficientSharesException();
         }
         Sql = "SELECT cash_to_trade from game_results WHERE " +
                 "game_id = ? AND username = ?;";
 
-
         BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
         if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
             throw new InsufficientFundsException();
         } else {
             String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
-                    "shares_purchased, shares_sold, shares_per_ticker, company_name)" +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?);" +
+                    "shares_purchased, shares_sold, company_name, shares_per_ticker) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, " +
+                    "coalesce((SELECT shares_owned FROM user_shares_vw sq WHERE sq.game_id = ? AND sq.ticker = ? " +
+                    "AND sq.username = ?),0) + (? - ?)); " +
                     "UPDATE game_results SET cash_to_trade = " +
                     "cash_to_trade + ?, total_account_value = total_account_value - ? WHERE game_id = ? " +
                     "AND user_id =  " +
-                    "(SELECT user_id FROM users WHERE username = ?); COMMIT";
+                    "(SELECT user_id FROM users WHERE username = ?); COMMIT; ";
             jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
                     stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
-                    stocks.getSharesSold(), stocks.getSharesPerTicker(),
-                    stocks.getCompanyName(), cash, cash, stocks.getGameId(), stocks.getUsername());
+                    stocks.getSharesSold(), stocks.getCompanyName(), stocks.getGameId(), stocks.getTicker(), stocks.getUsername(),
+                    stocks.getSharesPurchased(), stocks.getSharesSold(),
+                    cash, cash, stocks.getGameId(), stocks.getUsername());
 
         }
     }
@@ -97,6 +115,7 @@ public class JdbcStocksDao implements StocksDao {
         String Sql = "SELECT username, game_id, portfolio_value FROM portfolio_values_vw " +
                 "WHERE game_id = ? " +
                 "ORDER BY portfolio_value DESC;";
+
        SqlRowSet results = jdbcTemplate.queryForRowSet(Sql, gameId);
        while (results.next()) {
            leaderboard.add(mapRowToLeaderboard(results));
@@ -129,6 +148,21 @@ public class JdbcStocksDao implements StocksDao {
         return leaderboard;
     }
 
+
+
+
+
+
+
+
+    private UserShares mapRowToUserShares(SqlRowSet rs) {
+        UserShares userShares = new UserShares();
+        userShares.setGameId(rs.getInt("game_id"));
+        userShares.setUsername(rs.getString("username"));
+        userShares.setTicker(rs.getString("ticker"));
+        userShares.setSharesOwned(rs.getInt("shares_owned"));
+        return userShares;
+    }
 
         }
 

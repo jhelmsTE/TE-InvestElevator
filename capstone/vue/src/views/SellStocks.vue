@@ -93,7 +93,7 @@ export default {
       console.log(this.stocks.username)
       gameService.createTransaction(this.stocks)
       console.log(this.stocks.gameId)
-      // this.$router.push({name: 'game-details', params:{id: this.$store.state.gameDetailId}})
+      this.$router.push({name: 'game-details', params:{id: this.$store.state.gameDetailId}})
     }
   }
 };
