@@ -6,13 +6,14 @@
       <input type="text" v-model="selectedGame" placeholder="Search games..." />
     </div>
     <div class="all-cards">
-      <button v-bind:gameId="game.id"
-        v-on:click="goToGameDetails(game.id)"
+      <router-link
+        :to="{ name: 'game-details', params: { id: parseInt(game.gameId) } }"
         class="card"
-        v-for="game in filteredGamesForSearchBar" v-bind:key="game.id"
+        v-for="game in filteredGamesForSearchBar" 
+        v-bind:key="game.id"
       >
         <h4>{{ game.gameName }}</h4>
-      </button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -27,7 +28,6 @@ export default {
       games: [],
       gameResults: [],
       game: {
-        id: "",
         name: "",
       },
       user: {
@@ -61,12 +61,6 @@ export default {
       });
     },
   },
-  methods: {
-    goToGameDetails(id){
-      console.log(id)
-      this.$router.push({ name: 'game-details', params: { id: id } })
-    }
-  }
 };
 </script>
 

@@ -7,7 +7,7 @@
     </div>
     <div class="all-cards">
       <router-link
-        :to="{ name: 'game-details', params: { id: game.id } }"
+        :to="{ name: 'game-details', params: { id: parseInt(game.gameId) } }"
         class="card"
         v-for="game in filteredGamesForSearchBar"
         v-bind:key="game.id"
