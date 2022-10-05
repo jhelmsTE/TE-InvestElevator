@@ -108,14 +108,16 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: rgb(26, 17, 89);
+    background-image: url(../images/adj-projected-logo-img.png)
 }
 .form-register{
-  border: 2px solid white;
+  border: 2px solid limegreen;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 30px;
+  background: rgba(26, 17, 89, .9)
+  
 }
 .username-line{
   display: flex;

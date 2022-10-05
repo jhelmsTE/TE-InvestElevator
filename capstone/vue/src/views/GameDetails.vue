@@ -139,7 +139,8 @@ export default {
   padding-left: 10px;
   padding-bottom: 10px;
   flex: 1;
-  border: 2px solid white;
+  border: 2px solid limegreen;
+  background: rgba(26, 17, 89, .9)
 }
 .flex-child:first-child {
   margin-right: 20px;
