@@ -12,21 +12,22 @@ import java.math.BigDecimal;
 
 
 public class StocksInfo {
-    //instance variables that match API JSON:
 
-//    private String name;
-//    private String tickerValue;
-//    private String tickerName;
-//    private String nameValue;
-//    private String stockName;
 
     //PT 1 of 3: API URL
+    // a
     private static final String API_INFO_BASE_URL = "https://api.polygon.io/v3/reference/tickers/";
+    // b
     private static final String API_PRICE_BASE_URL = "https://api.polygon.io/v2/aggs/ticker/";
 
     // PT 2 of 3: API URL - 'ticker' variable will change based on user input
+    // a
     private String ticker;
+
+   // a+ b
+    
     private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-09-29/2022-09-30?adjusted=true";
+
 
     //PT 3 of 3: API URL -
     private static final String API_BASE_INFO_KEY = "?apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
@@ -80,8 +81,6 @@ public class StocksInfo {
         System.out.println("$" + closingPrice);
         stockPriceInfo.setStockPrice(closingPrice);
 
-//        System.out.println(basicStockPriceInfo[0]);
-//        System.out.println(basicStockPriceInfo[1]);
         return stockPriceInfo;
     }
 
