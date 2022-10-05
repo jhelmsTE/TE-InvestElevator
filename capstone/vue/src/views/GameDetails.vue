@@ -40,11 +40,9 @@
       </div>
       <div class="flex-child">
         <p>Game Participants and Current Balances</p>
-        <p>User | Cash  |  StockValue  |  Total Account</p>
         <div class="participants">
           <p v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
-            {{ gameResult.userName }} | ${{ gameResult.cashToTrade }} | ${{gameResult.totalAccountValue}}
-            | ${{gameResult.cashToTrade + gameResult.totalAccountValue}}
+            {{ gameResult.userName }} {{ gameResult.cashToTrade }}
           </p>
         </div>
       </div>
@@ -112,10 +110,7 @@ export default {
   },
   computed: {
     currentGameResults() {
-      return this.gameResults
-    },
-    sumAccount(){
-       return this.gameResult.cashToTrade + this.gameResult.totalAccountValue
+      return this.gameResults;
     }
   }
 };

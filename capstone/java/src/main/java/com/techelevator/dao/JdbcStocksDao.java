@@ -12,6 +12,7 @@ import java.util.List;
 
 @Component
 public class JdbcStocksDao implements StocksDao {
+
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcStocksDao(JdbcTemplate jdbcTemplate) {
