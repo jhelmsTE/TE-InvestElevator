@@ -1,5 +1,7 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.Game;
+import com.techelevator.model.Stocks;
 import com.techelevator.model.StocksInfo;
 import org.springframework.stereotype.Component;
 
@@ -20,4 +22,11 @@ public class JdbcStocksInfoDao implements StocksInfoDao{
     public BigDecimal getStockPriceFromAPI(String url) {
         return null;
     }
+
+    @Override
+    public void updateStockPrices(Stocks stocks) {
+        String sql = "UPDATE games SET"
+    }
+
+
 }
