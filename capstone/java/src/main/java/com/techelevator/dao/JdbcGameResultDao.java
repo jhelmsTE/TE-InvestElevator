@@ -78,8 +78,13 @@ public class JdbcGameResultDao implements GameResultDao {
     @Override
     public List<GameResult> findGameResultByNotCurrentUser(String userName) {
         List<GameResult> gameResultsListByUser = new ArrayList<>();
-        String sql = "SELECT * FROM game_results WHERE game_name NOT IN " +
-                "(SELECT game_name FROM game_results WHERE username = ?);";
+        String sql = "SELECT DISTINCT ON (game_id) game_id, user_id, username, game_name, cash_to_trade, total_account_value \n" +
+                "FROM game_results \n" +
+                "WHERE game_name NOT IN (\n" +
+                "\tSELECT game_name \n" +
+                "\tFROM game_results \n" +
+                "\tWHERE username = ?\n" +
+                "\t);";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userName);
         while(results.next()) {
             GameResult gameResult = mapRowToGameResult(results);

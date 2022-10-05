@@ -10,7 +10,6 @@
 
 <style>
 #nav{
-  background: rgb(26, 17, 89);
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
