@@ -13,6 +13,7 @@ import java.util.List;
 
 @Component
 public class JdbcStocksDao implements StocksDao {
+
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcStocksDao(JdbcTemplate jdbcTemplate) {
@@ -43,8 +44,8 @@ public class JdbcStocksDao implements StocksDao {
         List<Stocks> stocksList = new ArrayList<>();
         String sql = "SELECT username, game_id, ticker, stock_price, shares_purchased " +
                 ", shares_sold, transaction_id, shares_per_ticker, company_name FROM stocks WHERE game_id = ?; ";
-
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
+
         while (results.next()) {
             Stocks stocks = mapRowToStocks(results);
             stocksList.add(stocks);

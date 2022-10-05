@@ -45,8 +45,6 @@ public class JdbcGameResultDao implements GameResultDao {
 
         for (GameResult eachGameResult : gameResults) {
 
-            // call a method that finds gameId by gameName (eachGameResult.getGameName)
-
             String name = eachGameResult.getGameName();
             int gameId =  findIdByGameName(name);// result from method
             eachGameResult.setGameId(gameId);
@@ -63,6 +61,36 @@ public class JdbcGameResultDao implements GameResultDao {
                     ,eachGameResult.getTotalAccountValue());
         }
 
+    }
+
+    @Override
+    public List<GameResult> findGameResultByCurrentUser(String userName) {
+        List<GameResult> gameResultsListByUser = new ArrayList<>();
+        String sql = "SELECT * FROM game_results WHERE username = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userName);
+        while(results.next()) {
+            GameResult gameResult = mapRowToGameResult(results);
+            gameResultsListByUser.add(gameResult);
+        }
+        return gameResultsListByUser;
+    }
+
+    @Override
+    public List<GameResult> findGameResultByNotCurrentUser(String userName) {
+        List<GameResult> gameResultsListByUser = new ArrayList<>();
+        String sql = "SELECT DISTINCT ON (game_id) game_id, user_id, username, game_name, cash_to_trade, total_account_value \n" +
+                "FROM game_results \n" +
+                "WHERE game_name NOT IN (\n" +
+                "\tSELECT game_name \n" +
+                "\tFROM game_results \n" +
+                "\tWHERE username = ?\n" +
+                "\t);";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, userName);
+        while(results.next()) {
+            GameResult gameResult = mapRowToGameResult(results);
+            gameResultsListByUser.add(gameResult);
+        }
+        return gameResultsListByUser;
     }
 
     private GameResult mapRowToGameResult(SqlRowSet rs){

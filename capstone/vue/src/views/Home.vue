@@ -50,9 +50,8 @@ export default {
   flex-direction: column;
   justify-content: center;
 }
-body,
-html {
-  background: rgb(26, 17, 89);
+body{
+  background-image: url(../images/stock-market-game-header-img.jpeg);
   color: white;
   width: 100%;
   min-height: 100%;
@@ -97,5 +96,6 @@ a {
   align-items: center;
   border: 2px solid limegreen;
   padding: 20px;
+  background: rgba(26, 17, 89, .9)
 }
 </style>

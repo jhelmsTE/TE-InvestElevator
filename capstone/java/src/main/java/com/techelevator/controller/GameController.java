@@ -10,7 +10,11 @@ import com.techelevator.model.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
 import java.io.IOException;
+
+import java.security.Principal;
+
 import java.util.Date;
 import java.util.List;
 
@@ -60,19 +64,34 @@ public class GameController {
         return gameResultDao.findGameResultById(id);
     }
 
-    @RequestMapping(path= "/endGame/{id}", method = RequestMethod.PUT)
-    public void updateCurrentDate(@PathVariable int id, @RequestBody MixedObject mixedObject ) throws GameNotFoundException{
 
-    Game game = mixedObject.getGame();
-    Stocks stocks = mixedObject.getStocks();
+    @RequestMapping(path= "/endGame/{id}", method = RequestMethod.PUT)
+    public void updateCurrentDate(@PathVariable int id, @RequestBody MixedObject mixedObject ) throws GameNotFoundException {
+
+        Game game = mixedObject.getGame();
+        Stocks stocks = mixedObject.getStocks();
 
         StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
         stocks.setStockPrice(stocksInfo.getStockPriceInfoFromAPI().getStockPrice());
-        Date startDate =  gameDao.changeCurrentDate(game, id, stocks);
+        Date startDate = gameDao.changeCurrentDate(game, id, stocks);
         if (startDate.compareTo(game.getEndDate()) > 0) {
 
             stocksDao.sellAllStocks(stocks);
         }
     }
 
+    //findGameResultByUsername
+    @RequestMapping(path = "/viewGameResultsByUsername", method = RequestMethod.GET)
+    public List<GameResult> getGameResultsByUsername(Principal principal) throws GameNotFoundException {
+        return gameResultDao.findGameResultByCurrentUser(principal.getName());
     }
+
+    //findGameResultByNotCurrentUser
+    @RequestMapping(path = "/viewGameResultsByNotCurrentUser", method = RequestMethod.GET)
+    public List<GameResult> getGameResultsByNotCurrentUser(Principal principal) throws GameNotFoundException {
+        return gameResultDao.findGameResultByNotCurrentUser(principal.getName());
+
+    }
+
+    }
+

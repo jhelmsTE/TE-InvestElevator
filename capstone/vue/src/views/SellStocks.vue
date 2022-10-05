@@ -11,7 +11,6 @@
         <option value="GOOG">Alphabet (Google)</option>
         <option value="AMZN">Amazon</option>
         <option value="TSLA">Tesla</option>
-        <option value="BRK-B">Berkshire Hathaway</option>
         <option value="UNH">UnitedHealth</option>
         <option value="JNJ">Johnson & Johnson</option>
         <option value="V">Visa</option>

@@ -82,7 +82,7 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: rgb(26, 17, 89);
+  background-image: url(../images/adj-projected-logo-img.png)
   
 }
 .sr-only{
@@ -124,6 +124,7 @@ text-shadow: 2px 3px 4px black;
   flex-direction: column;
   justify-content: center;
   padding: 30px;
+  background: rgba(26, 17, 89, .95)
 }
 
 .need-account{
