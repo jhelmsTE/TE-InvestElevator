@@ -77,7 +77,7 @@ CREATE TABLE stocks (
 ALTER TABLE games 
 		ADD CONSTRAINT FK_games FOREIGN KEY (organizer_id) REFERENCES users(username);
 
-DROP VIEW IF EXISTS portfolio_values_vw, uIser_shares_vw, stock_prices_vw;
+DROP VIEW IF EXISTS portfolio_values_vw, user_shares_vw, stock_prices_vw;
 -- 
 CREATE OR REPLACE VIEW stock_prices_vw AS
 SELECT ticker, stock_price, game_id FROM stocks s
