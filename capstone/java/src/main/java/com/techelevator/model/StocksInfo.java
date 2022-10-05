@@ -23,8 +23,11 @@ public class StocksInfo {
     // PT 2 of 3: API URL - 'ticker' variable will change based on user input
     // a
     private String ticker;
+
    // a+ b
-    private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2021-09-28/2021-09-29?adjusted=true";
+    
+    private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-09-29/2022-09-30?adjusted=true";
+
 
     //PT 3 of 3: API URL -
     private static final String API_BASE_INFO_KEY = "?apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";

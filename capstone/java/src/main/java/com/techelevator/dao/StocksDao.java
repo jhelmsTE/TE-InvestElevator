@@ -18,4 +18,6 @@ public interface StocksDao {
 
     List<Leaderboard> displayLeaderboard(int gameId);
 
+    void sellAllStocks(Stocks stocks);
+
 }

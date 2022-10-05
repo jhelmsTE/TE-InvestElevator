@@ -21,6 +21,9 @@ public class Game {
         this.gameResult = gameResult;
     }
 
+    public Game(Object object) {
+    }
+
     public int getId() {
         return id;
     }
