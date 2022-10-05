@@ -1,6 +1,7 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -18,8 +19,10 @@ public class JdbcStocksDao implements StocksDao {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    private GameDao gameDao;
     private GameResult gameResult;
     private Leaderboard leaderboard;
+
 
 
     @Override
@@ -66,6 +69,17 @@ public class JdbcStocksDao implements StocksDao {
         return stocks;
     }
 
+    @Override
+    public void sellAllStocks(Stocks stocks){
+        String sql = "SELECT SUM(shares_owned) from user_shares_vw WHERE " +
+                "game_id = ? AND username = ? AND ticker = ?;";
+        Integer shares = jdbcTemplate.queryForObject(sql, Integer.class, stocks.getGameId(), stocks.getUsername(), stocks.getTicker());
+        if(shares > 0){
+            stocks.setSharesSold(shares);
+            createNewStockTransaction(stocks);
+        }
+
+    }
 
     @Override
     @Transactional
@@ -107,6 +121,8 @@ public class JdbcStocksDao implements StocksDao {
         }
     }
 
+
+
     @Override
     public List<Leaderboard> displayLeaderboard(int gameId) {
         // Once the timer hits "0" (i.e. the "end date and time" has arrived)
@@ -126,6 +142,8 @@ public class JdbcStocksDao implements StocksDao {
 
 
     }
+
+
     
 
 

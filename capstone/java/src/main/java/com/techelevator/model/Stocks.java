@@ -19,6 +19,9 @@ public class Stocks {
     public Stocks() {
     }
 
+    public Stocks(Object object) {
+    }
+
     public BigDecimal getStockPrice() {
         return stockPrice;
     }

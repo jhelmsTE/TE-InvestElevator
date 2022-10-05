@@ -2,6 +2,8 @@ package com.techelevator.dao;
 
 import com.techelevator.model.Game;
 import com.techelevator.model.GameNotFoundException;
+import com.techelevator.model.Stocks;
+import com.techelevator.model.UserShares;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -9,10 +11,14 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 @Component
 public class JdbcGameDao implements GameDao{
-    private final JdbcTemplate jdbcTemplate;
+    private StocksDao stocksDao;
+    private JdbcTemplate jdbcTemplate;
     public JdbcGameDao(JdbcTemplate jdbcTemplate){this.jdbcTemplate = jdbcTemplate;}
+    JdbcStocksDao sDao = new JdbcStocksDao(this.jdbcTemplate);
+    private JdbcStocksDao jdbcStocksDao;
     @Override
     public List<Game> findAllGames() {
         List<Game> games = new ArrayList<>();
@@ -51,7 +57,14 @@ public class JdbcGameDao implements GameDao{
 
         jdbcTemplate.update(sql, startDate, endDate, gameName, id);
     }
-
+    @Override
+    public Date changeCurrentDate(Game game, int id, Stocks stocks) {
+        String sql = "UPDATE games SET start_date = start_date + INTERVAL '1 year' WHERE game_id = ?;";
+        jdbcTemplate.update(sql, id);
+        String sql2 = "SELECT start_date FROM games WHERE game_id = ?;";
+        Date startDate = jdbcTemplate.queryForObject(sql2, Date.class, id);
+       return startDate;
+    }
     private Game mapRowToGame(SqlRowSet rs){
         Game game = new Game();
         game.setId(rs.getInt("game_id"));

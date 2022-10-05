@@ -28,9 +28,10 @@ NO MAXVALUE;
 CREATE TABLE games (
 	game_id int NOT NULL DEFAULT nextval('seq_game_id'),
 	organizer_id varchar(50) NOT NULL,
-	start_date date NOT NULL,
+	start_date date DEFAULT CURRENT_DATE,
 	end_date date NOT NULL,
 	game_name varchar(50) NOT NULL,
+	is_active BOOLEAN DEFAULT TRUE,
 	game_results varchar(50),
 	CONSTRAINT PK_games PRIMARY KEY (game_id)
 
