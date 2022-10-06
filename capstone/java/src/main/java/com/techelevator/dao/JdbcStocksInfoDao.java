@@ -25,7 +25,7 @@ public class JdbcStocksInfoDao implements StocksInfoDao{
 
     @Override
     public void updateStockPrices(Stocks stocks) {
-        String sql = "UPDATE games SET"
+        String sql = "UPDATE games SET";
     }
 
 

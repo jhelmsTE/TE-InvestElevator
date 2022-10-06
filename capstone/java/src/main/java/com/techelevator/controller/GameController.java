@@ -26,6 +26,7 @@ public class GameController {
     private GameResultDao gameResultDao;
     private StocksDao stocksDao;
 
+
     public GameController(UserDao userDao, GameDao gameDao, GameResultDao gameResultDao, StocksDao stocksDao) {
         this.userDao = userDao;
         this.gameDao = gameDao;
@@ -34,18 +35,18 @@ public class GameController {
     }
 
     @RequestMapping(value = "/viewAllGames", method = RequestMethod.GET)
-    public List<Game> viewAllGames() throws GameNotFoundException{
+    public List<Game> viewAllGames() throws GameNotFoundException {
         return gameDao.findAllGames();
     }
 
     @RequestMapping(value = "/createGame", method = RequestMethod.POST)
-    public void create(@Valid @RequestBody Game newGame){
-    gameDao.createGame(newGame.getUsername(), newGame.getStartDate(),
-            newGame.getEndDate(), newGame.getGameName(), newGame.getGameResult());
+    public void create(@Valid @RequestBody Game newGame) {
+        gameDao.createGame(newGame.getUsername(), newGame.getStartDate(),
+                newGame.getEndDate(), newGame.getGameName(), newGame.getGameResult());
     }
 
-    @RequestMapping(value ="/createGameResult", method = RequestMethod.POST)
-    public void create(@RequestBody GameResult[] newGameResult){
+    @RequestMapping(value = "/createGameResult", method = RequestMethod.POST)
+    public void create(@RequestBody GameResult[] newGameResult) {
         gameResultDao.createGameResult(newGameResult);
     }
 
@@ -55,7 +56,7 @@ public class GameController {
     }
 
     @RequestMapping(path = "/viewGame/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @Valid @RequestBody Game updateGame){
+    public void update(@PathVariable int id, @Valid @RequestBody Game updateGame) {
         gameDao.updateGame(id, updateGame.getStartDate(), updateGame.getEndDate(), updateGame.getGameName());
     }
 
@@ -65,19 +66,9 @@ public class GameController {
     }
 
 
-    @RequestMapping(path= "/endGame/{id}", method = RequestMethod.PUT)
-    public void updateCurrentDate(@PathVariable int id, @RequestBody MixedObject mixedObject ) throws GameNotFoundException {
-
-        Game game = mixedObject.getGame();
-        Stocks stocks = mixedObject.getStocks();
-
-        StocksInfo stocksInfo = new StocksInfo(stocks.getTicker());
-        stocks.setStockPrice(stocksInfo.getStockPriceInfoFromAPI().getStockPrice());
-        Date startDate = gameDao.changeCurrentDate(game, id, stocks);
-        if (startDate.compareTo(game.getEndDate()) > 0) {
-
-            stocksDao.sellAllStocks(stocks);
-        }
+    @RequestMapping(path = "/endGame/{id}", method = RequestMethod.PUT)
+    public void updateCurrentDate(@PathVariable int id) throws GameNotFoundException {
+        stocksDao.endGame(id);
     }
 
     //findGameResultByUsername
@@ -93,5 +84,5 @@ public class GameController {
 
     }
 
-    }
+}
 
