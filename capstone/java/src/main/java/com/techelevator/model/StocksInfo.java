@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class StocksInfo {
@@ -26,16 +29,19 @@ public class StocksInfo {
 
    // a+ b
     
-    private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-09-29/2022-09-30?adjusted=true";
-
+    private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-05-04/2022-05-05?adjusted=true";
+    private static final String API_RANGE_AND_DATE_BASE_URL2 = "/range/1/day/2022-08-04/2022-08-05?adjusted=true";
 
     //PT 3 of 3: API URL -
-    private static final String API_BASE_INFO_KEY = "?apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
-    private static final String API_BASE_PRICE_KEY = "&apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
+
+    private static final String API_BASE_INFO_KEY = "?apiKey=WTHBG8q_O3HFvbFDiuteBf7IaFZNtOkJ";
+
+    private static final String API_BASE_PRICE_KEY = "&apiKey=WTHBG8q_O3HFvbFDiuteBf7IaFZNtOkJ";
 
     public StocksInfo(String tickerSymbol) {
         this.ticker = tickerSymbol;
     }
+
 
 
 //good example of how to grab ticker, company name from API endpoint above ^^

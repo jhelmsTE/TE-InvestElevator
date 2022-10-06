@@ -13,6 +13,7 @@
   text-align: center;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   font-weight: bold;
+  padding-right: 5px;
 }
 .homeButton{
   padding-right: 10px;

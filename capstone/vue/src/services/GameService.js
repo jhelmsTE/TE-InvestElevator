@@ -41,6 +41,10 @@ export default {
 
     getGameResultsByNotCurrentUser() {
         return axios.get('/viewGameResultsByNotCurrentUser')
+    },
+
+    endGame(id, mixedObject) {
+        return axios.put(`/endGame/${id}`, mixedObject)
     }
        
 }

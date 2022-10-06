@@ -1,5 +1,6 @@
 package com.techelevator.dao;
 
+import com.techelevator.model.GameResult;
 import com.techelevator.model.Leaderboard;
 import com.techelevator.model.Stocks;
 import com.techelevator.model.UserShares;
@@ -19,5 +20,7 @@ public interface StocksDao {
     List<Leaderboard> displayLeaderboard(int gameId);
 
     void sellAllStocks(Stocks stocks);
+
+    List<GameResult> endGame(int id);
 
 }

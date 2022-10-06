@@ -40,12 +40,6 @@
         <option value="AVGO">Broadcom</option>
         <option value="DIS">Walt Disney</option>
       </select>
-      <!-- Save for later, just in case
-        <select class="search dropdown" v-model="selectedStock">
-        <option v-for="stock in stocks" v-bind:key="stock.id">
-          {{ stock.name }}
-        </option>
-      </select> -->
       <div class="stockNumber">
         <p>
         <label for="quantity">How many shares would you like to buy? (Whole numbers only; no fractional shares allowed)</label>
