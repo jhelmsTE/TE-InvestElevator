@@ -30,7 +30,7 @@ public class JdbcGameResultDao implements GameResultDao {
     @Override
     public List<GameResult> findGameResultById(int id) {
         List<GameResult> gameResultsList = new ArrayList<>();
-        String sql = "SELECT user_id, game_id, username, game_name, cash_to_trade, total_account_value" +
+        String sql = "SELECT user_id, game_id, username, game_name, cash_to_trade, investment_value" +
                 " FROM game_results WHERE game_id = ?;";
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
         while(results.next()) {
@@ -54,11 +54,11 @@ public class JdbcGameResultDao implements GameResultDao {
         for (GameResult eachGameResult : gameResults) {
 
             String sql = "INSERT into game_results (user_id, game_id, username, " +
-                    "game_name, cash_to_trade, total_account_value) VALUES (?,?,?,?,?,?)";
+                    "game_name, cash_to_trade, investment_value) VALUES (?,?,?,?,?,?)";
 
             jdbcTemplate.update(sql, eachGameResult.getUserId(),
                     eachGameResult.getGameId(), eachGameResult.getUserName(), eachGameResult.getGameName(), eachGameResult.getCashToTrade()
-                    ,eachGameResult.getTotalAccountValue());
+                    ,eachGameResult.getInvestmentValue());
         }
 
     }
@@ -100,7 +100,7 @@ public class JdbcGameResultDao implements GameResultDao {
         gameResult.setGameName(rs.getString("game_name"));
         gameResult.setUserName(rs.getString("username"));
         gameResult.setCashToTrade(rs.getBigDecimal("cash_to_trade"));
-        gameResult.setTotalAccountValue(rs.getBigDecimal("total_account_value"));
+        gameResult.setInvestmentValue(rs.getBigDecimal("investment_value"));
         return gameResult;
     }
 }

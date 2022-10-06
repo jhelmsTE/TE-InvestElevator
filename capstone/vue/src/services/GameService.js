@@ -43,8 +43,12 @@ export default {
         return axios.get('/viewGameResultsByNotCurrentUser')
     },
 
-    endGame(id, mixedObject) {
-        return axios.put(`/endGame/${id}`, mixedObject)
+    endGame(id) {
+        return axios.put(`/endGame/${id}`)
+    },
+
+    updatePrices(id) {
+        return axios.put(`/updatePrice/${id}`)
     }
        
 }

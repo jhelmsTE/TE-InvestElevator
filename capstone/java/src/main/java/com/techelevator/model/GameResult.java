@@ -8,19 +8,19 @@ public class GameResult {
         private String gameName;
         private String userName;
         private BigDecimal cashToTrade = new BigDecimal(100000);
-        private BigDecimal totalAccountValue = new BigDecimal(0);
+        private BigDecimal investmentValue = new BigDecimal(0);
 
         public GameResult(){
         }
 
     public GameResult(int userId, int gameId, String gameName, String userName, BigDecimal cashToTrade,
-                      BigDecimal totalAccountValue) {
+                      BigDecimal investmentValue) {
         this.userId = userId;
         this.gameId = gameId;
         this.gameName = gameName;
         this.userName = userName;
         this.cashToTrade = cashToTrade;
-        this.totalAccountValue = totalAccountValue;
+        this.investmentValue = investmentValue;
     }
 
     public String getGameName() {
@@ -47,8 +47,12 @@ public class GameResult {
         return cashToTrade;
     }
 
-    public BigDecimal getTotalAccountValue() {
-        return totalAccountValue;
+    public BigDecimal getInvestmentValue() {
+        return investmentValue;
+    }
+
+    public void setInvestmentValue(BigDecimal investmentValue) {
+        this.investmentValue = investmentValue;
     }
 
     public void setUserId(int userId) {
@@ -67,9 +71,6 @@ public class GameResult {
         this.cashToTrade = cashToTrade;
     }
 
-    public void setTotalAccountValue(BigDecimal totalAccountValue) {
-        this.totalAccountValue = totalAccountValue;
-    }
 
     @Override
     public String toString() {
@@ -78,7 +79,7 @@ public class GameResult {
                 ", gameId=" + gameId +
                 ", userName='" + userName + '\'' +
                 ", cashToTrade=" + cashToTrade +
-                ", totalAccountValue=" + totalAccountValue +
+                ", totalAccountValue=" + investmentValue +
                 '}';
     }
 }

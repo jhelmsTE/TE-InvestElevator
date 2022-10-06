@@ -96,8 +96,7 @@ public class JdbcStocksDao implements StocksDao {
     }
 
     @Override
-    public List<GameResult> endGame(int id) {
-        // Step 1 - Figure out the Tickers we need
+    public void endGame(int id) {
         List<String> tickerNames = new ArrayList<>();
 
         String Sql = "SELECT DISTINCT ticker FROM user_shares_vw " +
@@ -106,48 +105,72 @@ public class JdbcStocksDao implements StocksDao {
         while (results.next()) {
             tickerNames.add(results.getString("ticker"));
         }
-        // Step 2 - Figure out their prices
         Map<String, BigDecimal> pricePerTicker = finalPricePerTicker(tickerNames);
 
-        // Step 3 - a) Get List of Users, Tickers, and Shares
         Sql = "SELECT ticker, username, shares_owned FROM user_shares_vw " +
                 "WHERE game_id = ? ORDER BY username;";
         results = jdbcTemplate.queryForRowSet(Sql, id);
 
-        //          b) Loop thru the SQL results:
-        //              ==> make the stocks objects
         while (results.next()) {
             Stocks sellOrder = new Stocks();
             sellOrder.setTicker(results.getString("ticker"));
             sellOrder.setUsername(results.getString("username"));
             sellOrder.setSharesSold(results.getInt("shares_owned"));
-            //              ==> set the price
-            //              ==> call the createNewStockTransaction(sellOrder) method -> needs game_id, username, ticker
             sellOrder.setStockPrice(pricePerTicker.get(results.getString("ticker")));
             sellOrder.setGameId(id);
             createNewStockTransaction(sellOrder);
         }
 
 
-        List<GameResult> finalResults = new ArrayList<>();
-         Sql = "SELECT game_id, username, game_name, cash_to_trade, total_account_value FROM game_results " +
-                 "WHERE game_id = ? ORDER BY cash_to_trade DESC;";
-         results = jdbcTemplate.queryForRowSet(Sql, id);
+//        List<GameResult> finalResults = new ArrayList<>();
+//         Sql = "SELECT game_id, username, game_name, cash_to_trade, total_account_value FROM game_results " +
+//                 "WHERE game_id = ? ORDER BY cash_to_trade DESC;";
+//         results = jdbcTemplate.queryForRowSet(Sql, id);
+//        while (results.next()) {
+//
+//            finalResults.add(mapRowToGameResult(results));
+//
+//        }
+//        System.out.println(finalResults);
+//        return finalResults;
+    }
+
+    @Override
+    public void updateStockPrices(int id) {
+        List<String> tickerNames = new ArrayList<>();
+
+        String Sql = "SELECT DISTINCT ticker FROM user_shares_vw " +
+                "WHERE game_id = ?;";
+        SqlRowSet results = jdbcTemplate.queryForRowSet(Sql, id);
         while (results.next()) {
-
-            finalResults.add(mapRowToGameResult(results));
-
+            tickerNames.add(results.getString("ticker"));
         }
-        System.out.println(finalResults);
-        return finalResults;
+        Map<String, BigDecimal> pricePerTicker = finalPricePerTicker(tickerNames);
+
+        Sql = "SELECT ticker, username, shares_owned FROM user_shares_vw " +
+                "WHERE game_id = ? ORDER BY username;";
+        results = jdbcTemplate.queryForRowSet(Sql, id);
+
+        while (results.next()) {
+            Stocks sellOrder = new Stocks();
+            sellOrder.setTicker(results.getString("ticker"));
+            sellOrder.setUsername(results.getString("username"));
+            sellOrder.setSharesSold(results.getInt("shares_owned")); ;
+            sellOrder.setStockPrice(pricePerTicker.get(results.getString("ticker")));
+            sellOrder.setGameId(id);
+            createNewStockTransaction(sellOrder);
+        }
     }
 
 
     @Override
     @Transactional
     public void createNewStockTransaction(Stocks stocks) {
-        BigDecimal cash = (stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold()))).subtract(
-                stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased())));
+        BigDecimal cash = BigDecimal.ZERO;
+        BigDecimal buyOrderValue = BigDecimal.ZERO;
+        BigDecimal sellOrderValue = BigDecimal.ZERO;
+        BigDecimal avgPricePerShare = BigDecimal.ZERO;
+
         String Sql = "SELECT SUM(shares_owned) from user_shares_vw WHERE " +
                 "game_id = ? AND username = ? AND ticker = ?;";
         Integer userShareCheck = jdbcTemplate.queryForObject(Sql, Integer.class,
@@ -161,34 +184,117 @@ public class JdbcStocksDao implements StocksDao {
         Sql = "SELECT cash_to_trade from game_results WHERE " +
                 "game_id = ? AND username = ?;";
 
-        BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
-        if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
-            throw new InsufficientFundsException();
-        } else {
-            String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
-                    "shares_purchased, shares_sold, company_name, shares_per_ticker) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, " +
-                    "coalesce((SELECT shares_owned FROM user_shares_vw sq WHERE sq.game_id = ? AND sq.ticker = ? " +
-                    "AND sq.username = ?),0) + (? - ?)); " +
-                    "UPDATE game_results SET cash_to_trade = " +
-                    "cash_to_trade + ?, total_account_value = total_account_value - ? WHERE game_id = ? " +
-                    "AND user_id =  " +
-                    "(SELECT user_id FROM users WHERE username = ?); COMMIT; ";
-            jdbcTemplate.update(createStock, stocks.getUsername(), stocks.getGameId(),
-                    stocks.getTicker(), stocks.getStockPrice(), stocks.getSharesPurchased(),
-                    stocks.getSharesSold(), stocks.getCompanyName(), stocks.getGameId(), stocks.getTicker(), stocks.getUsername(),
-                    stocks.getSharesPurchased(), stocks.getSharesSold(),
-                    cash, cash, stocks.getGameId(), stocks.getUsername());
+        if(stocks.getSharesSold() == 0) {
+           buyOrderValue = stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesPurchased()));
+            cash = buyOrderValue.negate();
+
+            BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
+            if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
+                throw new InsufficientFundsException();
+            } else {
+                String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
+                        "shares_purchased, shares_sold, company_name, shares_per_ticker) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, " +
+                        "coalesce((SELECT shares_owned FROM user_shares_vw sq WHERE sq.game_id = ? AND sq.ticker = ? " +
+                        "AND sq.username = ?),0) + (? - ?)); " +
+                        "UPDATE game_results SET cash_to_trade = " +
+                        "cash_to_trade + ?, investment_value = investment_value + ? WHERE game_id = ? " +
+                        "AND user_id =  " +
+                        "(SELECT user_id FROM users WHERE username = ?); COMMIT; ";
+                jdbcTemplate.update(createStock, stocks.getUsername(),
+                        stocks.getGameId(),
+                        stocks.getTicker(),
+                        stocks.getStockPrice(),
+                        stocks.getSharesPurchased(),
+                        stocks.getSharesSold(),
+                        stocks.getCompanyName(),
+
+                        stocks.getGameId(),
+
+                        stocks.getTicker(),
+
+                        stocks.getUsername(),
+
+                        stocks.getSharesPurchased(),
+                        stocks.getSharesSold(),
+
+                        cash,
+                        buyOrderValue,
+                        stocks.getGameId(),
+                        stocks.getUsername());
+
+            }
+
+
+
+
+        }else {
+         String latestInvestmentValue = "SELECT investment_value FROM game_results WHERE game_id = ? AND username = ?; ";
+         BigDecimal totalInvestmentValue = jdbcTemplate.queryForObject(latestInvestmentValue, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
+
+            sellOrderValue = stocks.getStockPrice().multiply(BigDecimal.valueOf(stocks.getSharesSold()));
+
+            cash = sellOrderValue;
+
+           String sql =  "SELECT  stock_price from stocks where username = ? AND ticker = ? AND game_id = ? ORDER BY transaction_id DESC  limit 1; ";
+           BigDecimal latestPrice = jdbcTemplate.queryForObject(sql, BigDecimal.class, stocks.getUsername(), stocks.getTicker(), stocks.getGameId());
+
+           if(sellOrderValue != latestPrice){
+              totalInvestmentValue =  totalInvestmentValue.subtract(latestPrice);
+              totalInvestmentValue =  totalInvestmentValue.add(sellOrderValue);
+
+               String updatePrice = "UPDATE game_results SET investment_value = ? WHERE username = ? and game_id = ?; ";
+               jdbcTemplate.update(updatePrice, totalInvestmentValue, stocks.getUsername(), stocks.getGameId());
+
+           }
+
+
+            BigDecimal userCashCheck = jdbcTemplate.queryForObject(Sql, BigDecimal.class, stocks.getGameId(), stocks.getUsername());
+            if (BigDecimal.valueOf(stocks.getSharesPurchased()).multiply(stocks.getStockPrice()).compareTo(userCashCheck) > 0) {
+                throw new InsufficientFundsException();
+            } else {
+                String createStock = "BEGIN; INSERT INTO stocks (username, game_id, ticker, stock_price, " +
+                        "shares_purchased, shares_sold, company_name, shares_per_ticker) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, " +
+                        "coalesce((SELECT shares_owned FROM user_shares_vw sq WHERE sq.game_id = ? AND sq.ticker = ? " +
+                        "AND sq.username = ?),0) + (? - ?)); " +
+                        "UPDATE game_results SET cash_to_trade = " +
+                        "cash_to_trade + ?, investment_value = investment_value - ? WHERE game_id = ? " +
+                        "AND user_id =  " +
+                        "(SELECT user_id FROM users WHERE username = ?); COMMIT; ";
+                jdbcTemplate.update(createStock, stocks.getUsername(),
+                        stocks.getGameId(),
+                        stocks.getTicker(),
+                        stocks.getStockPrice(),
+                        stocks.getSharesPurchased(),
+                        stocks.getSharesSold(),
+                        stocks.getCompanyName(),
+
+                        stocks.getGameId(),
+
+                        stocks.getTicker(),
+
+                        stocks.getUsername(),
+
+                        stocks.getSharesPurchased(),
+                        stocks.getSharesSold(),
+
+                        cash,
+                        sellOrderValue,
+                        stocks.getGameId(),
+                        stocks.getUsername());
+
+            }
+
+
 
         }
+
     }
 
 
     @Override
     public List<Leaderboard> displayLeaderboard(int gameId) {
-        // Once the timer hits "0" (i.e. the "end date and time" has arrived)
-        // and a 'Game' has ended, then we want to call this method to 'displayLeaderboard'
-
 
         List<Leaderboard> leaderboard = new ArrayList<>();
         String Sql = "SELECT username, game_id, portfolio_value FROM portfolio_values_vw " +
@@ -204,8 +310,6 @@ public class JdbcStocksDao implements StocksDao {
 
     }
 
-
-
     private Stocks mapRowToStocks(SqlRowSet rs) {
         Stocks stocks = new Stocks();
         stocks.setUsername(rs.getString("username"));
@@ -219,9 +323,6 @@ public class JdbcStocksDao implements StocksDao {
         stocks.setCompanyName(rs.getString("company_name"));
         return stocks;
     }
-
-
-
 
     private Leaderboard mapRowToLeaderboard(SqlRowSet rs) {
         Leaderboard leaderboard = new Leaderboard();
@@ -248,14 +349,10 @@ public class JdbcStocksDao implements StocksDao {
         gameResult.setGameName(rs.getString("game_name"));
         gameResult.setUserName(rs.getString("username"));
         gameResult.setCashToTrade(rs.getBigDecimal("cash_to_trade"));
-        gameResult.setTotalAccountValue(rs.getBigDecimal("total_account_value"));
+        gameResult.setInvestmentValue(rs.getBigDecimal("investment_value"));
         return gameResult;
     }
 
 }
 
-// figure out all my tickers I need
-// get those prices
-// make a HashMap of {ticker, price}
-// loop thru the results from the SQL query
 

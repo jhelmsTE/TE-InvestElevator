@@ -21,6 +21,7 @@ public interface StocksDao {
 
     void sellAllStocks(Stocks stocks);
 
-    List<GameResult> endGame(int id);
+    void endGame(int id);
 
+    void updateStockPrices(int id);
 }

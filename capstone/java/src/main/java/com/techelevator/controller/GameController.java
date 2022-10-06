@@ -70,7 +70,11 @@ public class GameController {
     @RequestMapping(path = "/endGame/{id}", method = RequestMethod.PUT)
     public void updateCurrentDate(@PathVariable int id) throws GameNotFoundException {
         stocksDao.endGame(id);
+    }
 
+    @RequestMapping(path = "/updatePrice/{id}", method = RequestMethod.PUT)
+    public void updateCurrentPrices(@PathVariable int id) throws GameNotFoundException {
+        stocksDao.endGame(id);
     }
 
     //findGameResultByUsername

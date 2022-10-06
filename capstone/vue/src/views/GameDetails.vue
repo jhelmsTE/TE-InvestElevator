@@ -16,12 +16,16 @@
     </div>
      <div>
         <button
-         v-on:click="addUser(user.id, user.username)"
-         v-show="game.username === $store.state.user.username"
+         v-on:click="endGame(game.id)"
         >
-
           End Game
-
+        </button>
+     </div>
+     <div>
+        <button
+         v-on:click="updatePrices(game.id)"
+        >
+          update prices
         </button>
      </div>
     <h1>Game Name: {{ game.gameName }}</h1>
@@ -53,8 +57,8 @@
         <p>User | Cash  |  StockValue  |  Total Account</p>
         <div class="participants">
           <p v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
-            {{ gameResult.userName }} | ${{ parseFloat(gameResult.cashToTrade).toFixed(2) }} | ${{parseFloat(gameResult.totalAccountValue).toFixed(2)}}
-            | ${{parseFloat(gameResult.cashToTrade + gameResult.totalAccountValue).toFixed(2)}}
+            {{ gameResult.userName }} | ${{ parseFloat(gameResult.cashToTrade).toFixed(2) }} | ${{parseFloat(gameResult.investmentValue).toFixed(2)}}
+            | ${{parseFloat(gameResult.cashToTrade + gameResult.investmentValue).toFixed(2)}}
           </p>
         </div>
       </div>
@@ -131,7 +135,10 @@ export default {
       }));
       },
       endGame(id){
-        gameService.endGame(id)
+        gameService.endGame(id);
+      },
+      updatePrices(id){
+        gameService.updatePrices(id);
       }
   },
   computed: {
