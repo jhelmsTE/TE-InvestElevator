@@ -30,8 +30,8 @@ public class StocksInfo {
 
 
     //PT 3 of 3: API URL -
-    private static final String API_BASE_INFO_KEY = "?apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
-    private static final String API_BASE_PRICE_KEY = "&apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
+    private static final String API_BASE_INFO_KEY = "?apiKey=WTHBG8q_O3HFvbFDiuteBf7IaFZNtOkJ";
+    private static final String API_BASE_PRICE_KEY = "&apiKey=WTHBG8q_O3HFvbFDiuteBf7IaFZNtOkJ";
 
     public StocksInfo(String tickerSymbol) {
         this.ticker = tickerSymbol;

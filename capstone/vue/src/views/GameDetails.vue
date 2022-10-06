@@ -14,6 +14,16 @@
         </button>
       </div>
     </div>
+     <div>
+        <button
+         v-on:click="addUser(user.id, user.username)"
+         v-show="game.username === $store.state.user.username"
+        >
+
+          End Game
+
+        </button>
+     </div>
     <h1>Game Name: {{ game.gameName }}</h1>
     <div class="gameIntro">
       <h2 class="organizer">Organizer: {{ game.username }}</h2>
@@ -79,6 +89,17 @@ export default {
         userName: "",
         gameName: "",
       },
+      mixedObject:{
+        game:{
+            id: "",
+        },
+        stocks: {
+            ticker:"",
+            username:"",
+            gameId:""
+        }
+        
+      }
     };
   },
   created() {
@@ -108,6 +129,9 @@ export default {
       .then((response) => {
         this.gameResults = response.data;
       }));
+      },
+      endGame(id){
+        gameService.endGame(id)
       }
   },
   computed: {

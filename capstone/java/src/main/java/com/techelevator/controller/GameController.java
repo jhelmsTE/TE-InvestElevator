@@ -77,6 +77,7 @@ public class GameController {
         if (startDate.compareTo(game.getEndDate()) > 0) {
 
             stocksDao.sellAllStocks(stocks);
+
         }
     }
 
