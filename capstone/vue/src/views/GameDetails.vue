@@ -22,11 +22,6 @@
         </button>
      </div>
      <div>
-        <button
-         v-on:click="updatePrices(game.id)"
-        >
-          update prices
-        </button>
      </div>
     <h1>Game Name: {{ game.gameName }}</h1>
     <div class="gameIntro">
@@ -54,11 +49,10 @@
       </div>
       <div class="flex-child">
         <p>Game Participants and Current Balances</p>
-        <p>User | Cash  |  StockValue  |  Total Account</p>
+        <p>User | Cash In User's Account</p>
         <div class="participants">
           <p v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
-            {{ gameResult.userName }} | ${{ parseFloat(gameResult.cashToTrade).toFixed(2) }} | ${{parseFloat(gameResult.investmentValue).toFixed(2)}}
-            | ${{parseFloat(gameResult.cashToTrade + gameResult.investmentValue).toFixed(2)}}
+            {{ gameResult.userName }} | ${{ parseFloat(gameResult.cashToTrade).toFixed(2) }}
           </p>
         </div>
       </div>

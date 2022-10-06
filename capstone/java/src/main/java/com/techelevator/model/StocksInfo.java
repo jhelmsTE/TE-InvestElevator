@@ -28,9 +28,9 @@ public class StocksInfo {
     private String ticker;
 
    // a+ b
- // private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-07-13/2022-07-14?adjusted=true";
+  private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-07-13/2022-07-14?adjusted=true";
 
-private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-06-14/2022-06-15?adjusted=true";
+//private static final String API_RANGE_AND_DATE_BASE_URL = "/range/1/day/2022-06-14/2022-06-15?adjusted=true";
 //    private static final String API_RANGE_AND_DATE_BASE_URL2 = "/range/1/day/2022-08-04/2022-08-05?adjusted=true";
 
     //PT 3 of 3: API URL -
