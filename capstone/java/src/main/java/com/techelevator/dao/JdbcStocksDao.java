@@ -1,7 +1,6 @@
 package com.techelevator.dao;
 
 import com.techelevator.model.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -15,14 +14,12 @@ import java.util.Map;
 
 @Component
 public class JdbcStocksDao implements StocksDao {
-
     private final JdbcTemplate jdbcTemplate;
 
     public JdbcStocksDao(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private GameDao gameDao;
     private GameResult gameResult;
     private Leaderboard leaderboard;
 
@@ -84,6 +81,7 @@ public class JdbcStocksDao implements StocksDao {
     }
 
 
+
     private Map<String, BigDecimal> finalPricePerTicker(List<String> tickers) {
         Map<String, BigDecimal> pricePerTicker = new HashMap<>();
 
@@ -143,6 +141,7 @@ public class JdbcStocksDao implements StocksDao {
         System.out.println(finalResults);
         return finalResults;
     }
+
 
     @Override
     @Transactional
@@ -206,6 +205,7 @@ public class JdbcStocksDao implements StocksDao {
     }
 
 
+
     private Stocks mapRowToStocks(SqlRowSet rs) {
         Stocks stocks = new Stocks();
         stocks.setUsername(rs.getString("username"));
@@ -219,6 +219,9 @@ public class JdbcStocksDao implements StocksDao {
         stocks.setCompanyName(rs.getString("company_name"));
         return stocks;
     }
+
+
+
 
     private Leaderboard mapRowToLeaderboard(SqlRowSet rs) {
         Leaderboard leaderboard = new Leaderboard();

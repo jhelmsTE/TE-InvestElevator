@@ -14,6 +14,16 @@
         </button>
       </div>
     </div>
+     <div>
+        <button
+         v-on:click="addUser(user.id, user.username)"
+         v-show="game.username === $store.state.user.username"
+        >
+
+          End Game
+
+        </button>
+     </div>
     <h1>Game Name: {{ game.gameName }}</h1>
     <div class="gameIntro">
       <h2 class="organizer">Organizer: {{ game.username }}</h2>
@@ -24,7 +34,7 @@
       <div class="flex-child balanceAndStocks">
         <div v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
           <p v-show="gameResult.userName === $store.state.user.username">
-            My Current Balance: {{gameResult.cashToTrade}}
+            My Current Balance: ${{parseFloat(gameResult.cashToTrade).toFixed(2)}}
           </p>
         </div>
         <p class="stocksOwned">Stocks Owned</p>
@@ -43,8 +53,8 @@
         <p>User | Cash  |  StockValue  |  Total Account</p>
         <div class="participants">
           <p v-for="gameResult in currentGameResults" v-bind:key="gameResult.id">
-            {{ gameResult.userName }} | ${{ gameResult.cashToTrade }} | ${{gameResult.totalAccountValue}}
-            | ${{gameResult.cashToTrade + gameResult.totalAccountValue}}
+            {{ gameResult.userName }} | ${{ parseFloat(gameResult.cashToTrade).toFixed(2) }} | ${{parseFloat(gameResult.totalAccountValue).toFixed(2)}}
+            | ${{parseFloat(gameResult.cashToTrade + gameResult.totalAccountValue).toFixed(2)}}
           </p>
         </div>
       </div>
@@ -79,6 +89,17 @@ export default {
         userName: "",
         gameName: "",
       },
+      mixedObject:{
+        game:{
+            id: "",
+        },
+        stocks: {
+            ticker:"",
+            username:"",
+            gameId:""
+        }
+        
+      }
     };
   },
   created() {
@@ -108,6 +129,9 @@ export default {
       .then((response) => {
         this.gameResults = response.data;
       }));
+      },
+      endGame(id){
+        gameService.endGame(id)
       }
   },
   computed: {

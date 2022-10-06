@@ -33,7 +33,9 @@ public class StocksInfo {
     private static final String API_RANGE_AND_DATE_BASE_URL2 = "/range/1/day/2022-08-04/2022-08-05?adjusted=true";
 
     //PT 3 of 3: API URL -
-    private static final String API_BASE_INFO_KEY = "?apiKey=J8Q9pZADexcYKvsxHJcBJKNPWCwoEh7g";
+
+    private static final String API_BASE_INFO_KEY = "?apiKey=WTHBG8q_O3HFvbFDiuteBf7IaFZNtOkJ";
+
     private static final String API_BASE_PRICE_KEY = "&apiKey=WTHBG8q_O3HFvbFDiuteBf7IaFZNtOkJ";
 
     public StocksInfo(String tickerSymbol) {
