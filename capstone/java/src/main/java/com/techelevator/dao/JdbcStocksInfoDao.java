@@ -29,6 +29,10 @@ public class JdbcStocksInfoDao implements StocksInfoDao{
         String sql = "UPDATE games SET";
 
 
+       
+
+
+
 
     }
 
